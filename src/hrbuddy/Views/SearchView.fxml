@@ -37,13 +37,13 @@
       </GridPane>
    </top>
    <center>
-      <TableView fx:id="resultTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="resultTableView" onMouseClicked="#handleResultTableViewDoubleClick" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="firstnameColumn" prefWidth="150.0" text="Prénom" />
-          <TableColumn fx:id="lastnameColumn" prefWidth="150.0" text="Nom" />
-            <TableColumn fx:id="phoneColumn" prefWidth="90.0" text="Téléphone" />
-            <TableColumn fx:id="emailColumn" prefWidth="250.0" text="Courriel" />
-            <TableColumn fx:id="statusCol" prefWidth="132.0" text="Statut" />
+          <TableColumn fx:id="firstnameColumn" prefWidth="130.0" text="Prénom" />
+          <TableColumn fx:id="lastnameColumn" prefWidth="130.0" text="Nom" />
+            <TableColumn fx:id="telephoneColumn" prefWidth="150.0" text="Téléphone" />
+            <TableColumn fx:id="cellphoneColumn" prefWidth="150.0" text="Cellulaire" />
+            <TableColumn fx:id="emailColumn" prefWidth="220.0" text="Email" />
         </columns>
       </TableView>
    </center>
