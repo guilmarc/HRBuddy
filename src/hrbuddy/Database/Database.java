@@ -12,15 +12,18 @@ public class Database {
         return ourInstance;
     }
 
-    private String connection_driver = "jdbc:sqlite:datatidge.db";
+    private String connection_driver = "jdbc:sqlite:HRBuddy.db";
 
     private Connection connection = null;
 
     public Connection getConnection() {
         try {
+            Class.forName("org.sqlite.JDBC");
             this.connection = DriverManager.getConnection(connection_driver);
         } catch (SQLException ex) {
             this.connection = null;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return this.connection;
     }

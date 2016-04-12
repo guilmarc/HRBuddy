@@ -39,11 +39,11 @@
    <center>
       <TableView fx:id="resultTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn prefWidth="150.0" text="Prénom" />
-          <TableColumn prefWidth="150.0" text="Nom" />
-            <TableColumn prefWidth="90.0" text="Téléphone" />
-            <TableColumn prefWidth="250.0" text="Courriel" />
-            <TableColumn prefWidth="132.0" text="Statut" />
+          <TableColumn fx:id="firstnameColumn" prefWidth="150.0" text="Prénom" />
+          <TableColumn fx:id="lastnameColumn" prefWidth="150.0" text="Nom" />
+            <TableColumn fx:id="phoneColumn" prefWidth="90.0" text="Téléphone" />
+            <TableColumn fx:id="emailColumn" prefWidth="250.0" text="Courriel" />
+            <TableColumn fx:id="statusCol" prefWidth="132.0" text="Statut" />
         </columns>
       </TableView>
    </center>

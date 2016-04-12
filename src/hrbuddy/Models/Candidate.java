@@ -1,10 +1,23 @@
 package hrbuddy.Models;
 
+import hrbuddy.Database.Database;
+
+import java.sql.ResultSet;
+
 /**
  * Created by nboisvert on 16-04-11.
  */
-public class Candidate extends Model{
-    protected String table;
+
+
+public class Candidate extends Model { static { table = "candidates"; }
+
+    //On ne doit pas redéclarer mais réinitialiser (voir code ci-haut)
+    //protected static String table = "Candidate";
+
+    //PATCH TEMPORAIRE : À retirer quand on aura compris pourquoi la variable statique n'est pas prise en compte.
+    public static ResultSet all(){
+        return Database.getInstance().select("candidates");
+    }
 
     protected String firstname;
     protected String lastname;

@@ -18,11 +18,9 @@ public class Main extends Application {
 
         ResultSet rs = Candidate.all();
 
-      /*  while (rs.next()) {
+        while (rs.next()) {
             System.out.println(rs.getString("firstname"));
         }
-*/
-
 
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root));
