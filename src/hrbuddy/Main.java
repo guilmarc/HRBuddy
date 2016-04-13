@@ -22,13 +22,6 @@ public class Main extends Application {
 
         Database.getInstance().getStatus();
         Database.getInstance().getConnection().close();
-        Candidate c = Candidate.find(101);
-        if(c == null){
-            Logger.danger("nope");
-        }
-        c.setFirstname("Roger");
-        c.save();
-
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
