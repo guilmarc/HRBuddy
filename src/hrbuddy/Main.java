@@ -20,6 +20,15 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("Views/SearchView.fxml"));
 
+        Database.getInstance().getStatus();
+        Database.getInstance().getConnection().close();
+        Candidate c = Candidate.find(101);
+        if(c == null){
+            Logger.danger("nope");
+        }
+        c.setFirstname("Roger");
+        c.save();
+
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

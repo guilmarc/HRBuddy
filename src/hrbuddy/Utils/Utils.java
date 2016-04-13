@@ -17,6 +17,16 @@ public class Utils {
         }
         return output;
     }
+    public static String implode(String glue, List<String> items){
+        String output = "";
+        for( int i = 0; i < items.size(); i++){
+            output += items.get(i);
+            if(i != (items.size()-1)){
+                output += glue;
+            }
+        }
+        return output;
+    }
     public static List<String> explode(char limiter, String string){
         List<String> list = new ArrayList<String>();
         String temp = "";
@@ -36,5 +46,8 @@ public class Utils {
             list.add(temp.trim());
         }
         return list;
+    }
+    public static String escapeForSql(String string){
+        return "\'"+string.replaceAll("\'","''")+"\'";
     }
 }

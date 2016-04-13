@@ -1,13 +1,3 @@
-CREATE TABLE candidates (
-	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	firstname varchar(150),
-	lastname varchar(150),
-	address varchar(150),
-	cell_phone varchar(150),
-	home_phone varchar(150),
-	email varchar(150)
-);
-
 insert into candidates (firstname, lastname, address, cell_phone, home_phone, email, city) values ('Nicole', 'Wallace', '4 Anderson Avenue', '49-(496)723-7941', '33-(825)117-4224', 'nwallace0@sohu.com', 'Mainz');
 insert into candidates (firstname, lastname, address, cell_phone, home_phone, email, city) values ('Earl', 'Campbell', '120 Bay Street', '90-(753)987-1637', '62-(372)560-7462', 'ecampbell1@photobucket.com', 'Yeniköy');
 insert into candidates (firstname, lastname, address, cell_phone, home_phone, email, city) values ('Jessica', 'Arnold', '37 Novick Center', '7-(929)107-7018', '1-(843)643-6481', 'jarnold2@ehow.com', 'Mtsensk');

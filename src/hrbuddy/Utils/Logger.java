@@ -32,4 +32,13 @@ public class Logger {
     public static void debug(String message){
         Logger.log("Debug", message);
     }
+    public static void migrate(String message){
+        Logger.log("Migrating", message);
+    }
+    public static void warning(String message){
+        Logger.log("Warning", message);
+    }
+    public static void danger(String message){
+        Logger.log("Danger", message);
+    }
 }
