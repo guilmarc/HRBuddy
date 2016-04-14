@@ -1,70 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import java.lang.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<SplitPane fx:controller="hrbuddy.Controllers.CandidateController" dividerPositions="0.4748743718592965" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="528.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
-  <items>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="194.0" prefWidth="598.0">
+<AnchorPane fx:id="container" prefHeight="561.0" prefWidth="769.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hrbuddy.Controllers.CandidateController">
+   <children>
+      <HBox layoutY="39.0" prefHeight="219.0" prefWidth="830.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0">
          <children>
-            <HBox layoutX="105.0" layoutY="73.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <GridPane alignment="CENTER" prefHeight="246.0" prefWidth="371.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="179.7815399169922" minWidth="10.0" prefWidth="133.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="274.1314010620117" minWidth="10.0" prefWidth="238.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
                <children>
-                  <GridPane alignment="CENTER" prefHeight="246.0" prefWidth="371.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="179.7815399169922" minWidth="10.0" prefWidth="125.15727233886719" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="274.1314010620117" minWidth="10.0" prefWidth="245.8427276611328" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Label text="Titre" GridPane.halignment="LEFT" />
-                        <ComboBox prefHeight="27.0" prefWidth="124.0" GridPane.columnIndex="1" />
-                        <Label text="Prénom" GridPane.rowIndex="1" />
-                        <Label text="Nom" GridPane.rowIndex="2" />
-                        <Label text="Ville" GridPane.rowIndex="3" />
-                        <Label text="Téléphone domicile" GridPane.rowIndex="4" />
-                        <Label text="Téléphone mobile" GridPane.rowIndex="5" />
-                        <Label text="Courriel" GridPane.rowIndex="6" />
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <TextField GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <ComboBox prefHeight="27.0" prefWidth="257.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                     </children>
-                  </GridPane>
+                  <Label text="Titre" GridPane.halignment="LEFT" />
+                  <ComboBox fx:id="titleComboBox" prefHeight="27.0" prefWidth="124.0" GridPane.columnIndex="1" />
+                  <Label text="Prénom" GridPane.rowIndex="1" />
+                  <Label text="Nom" GridPane.rowIndex="2" />
+                  <Label text="Adresse" GridPane.rowIndex="3" />
+                  <Label text="Téléphone domicile" GridPane.rowIndex="4" />
+                  <Label text="Téléphone mobile" GridPane.rowIndex="5" />
+                  <Label text="Courriel" GridPane.rowIndex="6" />
+                  <TextField fx:id="firstnameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="lastnameTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="homephoneTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextField fx:id="mobilephoneTextField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <TextField fx:id="emailTextField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <TextField fx:id="addressTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </HBox>
-         </children></AnchorPane>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-         <children>
-            <TabPane prefHeight="252.0" prefWidth="598.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-              <tabs>
-                <Tab text="Untitled Tab 1">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </Tab>
-                <Tab text="Untitled Tab 2">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </Tab>
-              </tabs>
-            </TabPane>
-         </children></AnchorPane>
-  </items>
-</SplitPane>
+            </GridPane>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <TabPane layoutY="262.0" prefHeight="294.0" prefWidth="830.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="262.0">
+        <tabs>
+          <Tab text="Untitled Tab 1">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+          <Tab text="Untitled Tab 2">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <ToolBar prefHeight="40.0" prefWidth="830.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <Button fx:id="newButton" mnemonicParsing="false" onAction="#newCandidate" text="Nouveau" />
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveCandidate" text="Sauvegarder" />
+            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="5.0" />
+            <Button fx:id="searchButton" mnemonicParsing="false" text="Rechercher" />
+            <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="5.0" />
+            <Button fx:id="closeButton" mnemonicParsing="false" onAction="#closeWindow" text="Fermer" />
+        </items>
+      </ToolBar>
+   </children>
+</AnchorPane>

@@ -9,6 +9,7 @@ import hrbuddy.Utils.Migration;
 import sun.rmi.runtime.Log;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -127,6 +128,17 @@ public class Candidate {
         return query;
     }
 
+    public String toString(){
+        return "id : "+this.id+"\n" +
+                        "firstname : "+this.firstname+"\n" +
+                        "lastname : "+this.lastname+"\n" +
+                        "address : "+this.address+"\n" +
+                        "email : "+this.email+"\n" +
+                        "home_phone : "+this.home_phone+"\n" +
+                        "cell_phone : "+this.cell_phone+"\n";
+    }
+
+
     public int save(){
         ResultSet keys = Database.getInstance().execute(this.getQuery());
         int key = -1;
@@ -213,6 +225,7 @@ public class Candidate {
                 return new Candidate(rs);
             }
             else{
+                Logger.debug("Candidate not found");
                 return null;
             }
         } catch (SQLException e) {

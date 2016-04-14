@@ -1,5 +1,6 @@
 package hrbuddy;
 
+import hrbuddy.Controllers.DialogController;
 import hrbuddy.Database.Database;
 import hrbuddy.Models.Candidate;
 import hrbuddy.Utils.Logger;
@@ -18,11 +19,14 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("Views/SearchView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Views/MainView.fxml"));
+
+        Candidate c = Candidate.find(5);
+        Logger.debug(c.toString());
 
         Database.getInstance().getStatus();
         Database.getInstance().getConnection().close();
-        primaryStage.setTitle("Hello World");
+        primaryStage.setTitle("HRBuddy");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
