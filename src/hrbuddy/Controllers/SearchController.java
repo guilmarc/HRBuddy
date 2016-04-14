@@ -86,7 +86,17 @@ public class SearchController implements Initializable {
 
     private ObservableList<Candidate> candidates;
 
+
     public void buildSearchTextFieldData(){
+        candidates = FXCollections.observableArrayList();
+        candidates = (ObservableList<Candidate>)Candidate.search(this.searchTextField.getText(), "firstname");
+        resultTableView.setItems(candidates);
+    }
+
+
+
+
+    /*public void buildSearchTextFieldData2(){
         candidates = FXCollections.observableArrayList();
         try{
             String SQL = "Select * from viewSearchCandidates WHERE SearchField LIKE '%" + this.searchTextField.getText() +  "%'" ;  // + this.searchTextField.getText();
@@ -108,7 +118,7 @@ public class SearchController implements Initializable {
             e.printStackTrace();
             System.out.println("Error on Building Data");
         }
-    }
+    }*/
 
 
 }
