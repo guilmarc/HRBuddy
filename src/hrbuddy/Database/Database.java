@@ -1,9 +1,12 @@
 package hrbuddy.Database;
 
+import hrbuddy.Controllers.DialogController;
 import hrbuddy.Database.QueryBuilder.Query;
 import hrbuddy.Models.Candidate;
 import hrbuddy.Utils.Migration;
 import hrbuddy.Utils.Logger;
+import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -153,8 +156,11 @@ public class Database {
         try {
             Class.forName("org.sqlite.JDBC");
             if(!this.databaseExists()){
+                Alert alert = DialogController.noButton("Appuyez sur OK pour migrer la base de données");
                 Logger.warning("Database doesn't exists");
+
                 this.migrate(Candidate.getMigration());
+                alert.close();
             }
             //Class.forName("org.sqlite.JDBC");
         } catch (Exception e) {

@@ -15,17 +15,24 @@ import javafx.stage.Stage;
  * Created by nboisvert on 13/04/16.
  */
 public class DialogController {
-    public static void dialog(String message, Alert.AlertType type){
+    public static Alert dialog(String message, Alert.AlertType type){
         Alert alert = new Alert(type, message, ButtonType.OK);
         alert.showAndWait();
+        return alert;
     }
-    public static void warning(String message){
-        DialogController.dialog(message, Alert.AlertType.WARNING);
+    public static Alert warning(String message){
+        return DialogController.dialog(message, Alert.AlertType.WARNING);
     }
-    public static void confirmation(String message){
-        DialogController.dialog(message, Alert.AlertType.CONFIRMATION);
+    public static Alert confirmation(String message){
+        return DialogController.dialog(message, Alert.AlertType.CONFIRMATION);
     }
-    public static void error(String message){
-        DialogController.dialog(message, Alert.AlertType.ERROR);
+    public static Alert error(String message){
+        return DialogController.dialog(message, Alert.AlertType.ERROR);
+    }
+
+    public static Alert noButton(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING, message);
+        alert.showAndWait();
+        return alert;
     }
 }

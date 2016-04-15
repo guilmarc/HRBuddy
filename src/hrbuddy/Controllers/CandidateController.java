@@ -2,6 +2,8 @@ package hrbuddy.Controllers;
 
 import hrbuddy.Models.Candidate;
 import hrbuddy.Utils.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.Initializable;
@@ -10,30 +12,79 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 /**
  * Created by nboisvert on 2016-04-12.
  */
-public class CandidateController {
-    public ComboBox titleComboBox;
+public class CandidateController implements Initializable{
+    public ComboBox genderComboBox;
     public TextField firstnameTextField;
     public TextField lastnameTextField;
     public TextField homephoneTextField;
     public TextField mobilephoneTextField;
     public TextField emailTextField;
     public TextField addressTextField;
+    public TextField idTextField;
     protected String candidate_id = "-1";
     protected Candidate candidate;
     protected boolean editionMode = false;
 
     public Button newButton;
-    public Button closeButton;
     public Button saveButton;
     public Button searchButton;
     public AnchorPane container;
 
-    public void closeWindow(ActionEvent actionEvent) {
+    ObservableList<String> genderComboBoxValues =
+            FXCollections.observableArrayList(
+                    "-",
+                    "Homme",
+                    "Femme"
+            );
+
+    public void initEvents(){
+        firstnameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.onInputValueChanged(null);
+        });
+        lastnameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.onInputValueChanged(null);
+        });
+        homephoneTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.onInputValueChanged(null);
+        });
+        mobilephoneTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.onInputValueChanged(null);
+        });
+        emailTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.onInputValueChanged(null);
+        });
+        addressTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            this.onInputValueChanged(null);
+        });
     }
+
+    public void initialize(URL url, ResourceBundle bundle){
+        this.initEvents();
+        this.initListValues();
+    }
+
+    private void initListValues() {
+        this.genderComboBox.setValue(this.genderComboBoxValues);
+    }
+
     public void newCandidate(ActionEvent actionEvent) {
+        this.candidate_id = "-1";
+        this.clearForm();
+    }
+
+    public void clearForm(){
+        this.firstnameTextField.setText("");
+        this.lastnameTextField.setText("");
+        this.emailTextField.setText("");
+        this.homephoneTextField.setText("");
+        this.mobilephoneTextField.setText("");
+        this.idTextField.setText("");
     }
 
     public void fillForm(){
@@ -43,6 +94,7 @@ public class CandidateController {
             this.emailTextField.setText(this.candidate.getEmail());
             this.homephoneTextField.setText(this.candidate.getHomePhone());
             this.mobilephoneTextField.setText(this.candidate.getCellPhone());
+            this.idTextField.setText(this.candidate.getId());
         }
         else{
             Logger.debug("Couldn't load id : "+this.candidate_id);
@@ -70,6 +122,8 @@ public class CandidateController {
         );
         candidate.save();
         this.editionMode = false;
+        this.idTextField.setText(candidate.getId());
+        eventTriggered();
     }
 
     public void eventTriggered(){
@@ -78,7 +132,6 @@ public class CandidateController {
     }
 
     public void onInputValueChanged(Event event) {
-        Logger.debug("Triggered");
         this.editionMode = true;
         eventTriggered();
     }
