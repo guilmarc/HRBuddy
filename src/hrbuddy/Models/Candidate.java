@@ -50,6 +50,16 @@ public class Candidate {
         this.home_phone = "";
         this.cell_phone = "";
     }
+    public Candidate(HashMap<String,String> list){
+        this.id = (list.containsKey("id") ? list.get("id") : "");
+        this.firstname = (list.containsKey("firstname") ? list.get("firstname") : "");
+        this.lastname = (list.containsKey("lastname") ? list.get("lastname") : "");
+        this.address = (list.containsKey("address") ? list.get("address") : "");
+        this.email = (list.containsKey("email") ? list.get("email") : "");
+        this.home_phone = (list.containsKey("home_phone") ? list.get("home_phone") : "");
+        this.cell_phone = (list.containsKey("cell_phone") ? list.get("cell_phone") : "");
+        this.stored = true;
+    }
     public Candidate(ResultSet resultSet){
         try{
             this.id = resultSet.getString("id");
@@ -140,17 +150,19 @@ public class Candidate {
 
 
     public int save(){
-        ResultSet keys = Database.getInstance().execute(this.getQuery());
-        int key = -1;
-        try {
-            keys.next();
-            key = keys.getInt(1);
+        List<Integer> keys = Database.getInstance().execute(this.getQuery());
+        if(!this.stored) {
+            int key = -1;
+            if (keys.size() > 0) {
+                key = keys.get(0);
+            }
             this.id = String.valueOf(key);
-            keys.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            this.stored = true;
+            return key;
         }
-        return key;
+        else {
+            return Integer.parseInt(this.id);
+        }
     }
 
     /**
@@ -159,15 +171,10 @@ public class Candidate {
      * @return List of all the Candidates
      */
     public static List<Candidate> all(){
-        ResultSet rs = Database.getInstance().select(Candidate.table);
+        List<HashMap<String,String>> list = Database.getInstance().select(Candidate.table);
         List<Candidate> candidates = new ArrayList<>();
-        try {
-            while(rs.next()){
-                candidates.add(new Candidate(rs));
-            }
-        } catch (SQLException e) {
-            Logger.except(e.getMessage());
-            return null;
+        for(int i = 0; i < list.size(); i++){
+            candidates.add(new Candidate(list.get(i)));
         }
         return candidates;
     }
@@ -178,18 +185,12 @@ public class Candidate {
      * @return List of the matched candidates
      */
     public static List<Candidate> search(String criteria){
-        ResultSet rs = Database.getInstance().selectSearch(Candidate.table,criteria, Candidate.search_fields);
+        List<HashMap<String,String>> list = Database.getInstance().selectSearch(Candidate.table,criteria, Candidate.search_fields);
         List<Candidate> candidates = new ArrayList<>();
-        try {
-            while(rs.next()){
-                candidates.add(new Candidate(rs));
-            }
-        } catch (SQLException e) {
-            Logger.except(e.getMessage());
-            return null;
+        for(int i = 0; i < list.size(); i++){
+            candidates.add(new Candidate(list.get(i)));
         }
         return candidates;
-
     }
     /**
      * Return every instances of the table where at least one field from "search_fields" matched
@@ -199,15 +200,10 @@ public class Candidate {
      * @return List of the matched candidates
      */
     public static List<Candidate> search(String criteria, String...search_fields){
-        ResultSet rs = Database.getInstance().selectSearch(Candidate.table,criteria, search_fields);
+        List<HashMap<String,String>> list = Database.getInstance().selectSearch(Candidate.table,criteria, search_fields);
         List<Candidate> candidates = new ArrayList<>();
-        try {
-            while(rs.next()){
-                candidates.add(new Candidate(rs));
-            }
-        } catch (SQLException e) {
-            Logger.except(e.getMessage());
-            return null;
+        for(int i = 0; i < list.size(); i++){
+            candidates.add(new Candidate(list.get(i)));
         }
         return candidates;
 
@@ -219,18 +215,12 @@ public class Candidate {
      * @return Candidate instance
      */
     public static Candidate find(int id){
-        ResultSet rs = Database.getInstance().selectId(Candidate.table, id);
-        try {
-            if(rs.next()){
-                return new Candidate(rs);
-            }
-            else{
-                Logger.debug("Candidate not found");
-                return null;
-            }
-        } catch (SQLException e) {
-
-            Logger.except(e.getMessage());
+        List<HashMap<String,String>> list = Database.getInstance().selectId(Candidate.table, id);
+        if(list.size() > 0){
+            return new Candidate(list.get(0));
+        }
+        else{
+            Logger.debug("Candidate not found");
             return null;
         }
     }

@@ -9,6 +9,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -23,7 +25,6 @@ public class Database {
     private String connection_driver = "jdbc:sqlite";
     private String database_file = "HRBuddy.db";
     private int last_inserted_id = -1;
-    private Connection connection = null;
 
     public String getConnectionString(){
         return this.connection_driver+":"+this.database_file;
@@ -33,89 +34,89 @@ public class Database {
         return this.last_inserted_id;
     }
 
-    public Connection getConnection() {
-        try {
-            Class.forName("org.sqlite.JDBC");
-            this.connection = DriverManager.getConnection(this.getConnectionString());
-        } catch (SQLException ex) {
-            this.connection = null;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return this.connection;
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(this.getConnectionString());
     }
 
-    private ResultSet execSelect(String query){
-        ResultSet rs = null;
-        connection = this.getConnection();
+    private List<HashMap<String,String>> execSelect(String query){
+        List<HashMap<String,String>> datas = new ArrayList<>();
         try {
+            Connection connection = this.getConnection();
             Statement statement = connection.createStatement();
             ResultSet results = statement.executeQuery(query);
-            rs =  results;
+            datas = this.extractResultSet(results);
+            connection.close();
         }
         catch (Exception e){
             Logger.except(e.getMessage());
         }
-        finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {}
+        return datas;
+    }
+    private List<HashMap<String,String>> extractResultSet(ResultSet rs) throws SQLException {
+        ResultSetMetaData md = rs.getMetaData();
+        int columns = md.getColumnCount();
+        List<HashMap<String,String>> list = new ArrayList<>();
+        while (rs.next()){
+            HashMap row = new HashMap(columns);
+            for(int i=1; i<=columns; ++i){
+                row.put(md.getColumnName(i),rs.getString(i));
+            }
+            list.add(row);
         }
 
-        return rs;
+        return list;
     }
-    private ResultSet execUpdate(String query){
-        ResultSet rs = null;
-        connection = this.getConnection();
+    private List<Integer> execUpdate(String query){
+        List<Integer> keys = new ArrayList<>();
         try {
+            Connection connection = this.getConnection();
             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             statement.executeUpdate();
+            ResultSet rs = statement.getGeneratedKeys();
+            while (!rs.next()){
+                keys.add(rs.getInt(1));
+            }
+            rs.close();
             statement.close();
-            this.getConnection().close();
-            rs = statement.getGeneratedKeys();
+            connection.close();
         }
         catch (Exception e){
             Logger.except(e.getMessage());
         }
-        finally {
-            try {
-                this.getConnection().close();
-            } catch (SQLException e) {}
-        }
-        return rs;
+        return keys;
     }
-    private ResultSet execUpdate(Query query){
-        ResultSet rs = null;
-        connection = this.getConnection();
+    private List<Integer> execUpdate(Query query){
+        List<Integer> keys = new ArrayList<>();
         try {
+            Connection connection = this.getConnection();
             PreparedStatement statement = connection.prepareStatement(query.getQuery(), Statement.RETURN_GENERATED_KEYS);
             statement.executeUpdate();
-            this.getConnection().close();
-            rs = statement.getGeneratedKeys();
+            ResultSet rs = statement.getGeneratedKeys();
+            while (rs.next()){
+                keys.add(rs.getInt(1));
+            }
+            rs.close();
+            statement.close();
+            connection.close();
         }
         catch (Exception e){
             Logger.except(e.getMessage());
         }
-        finally {
-            try {
-                this.getConnection().close();
-            } catch (SQLException e) {}
-        }
-        return rs;
+        return keys;
     }
 
-    public ResultSet select(String table){
+    public List select(String table){
         return this.execSelect("SELECT * FROM "+table);
     }
 
-    public ResultSet selectId(String table, int id){
+    public List selectId(String table, int id){
         return this.execSelect("SELECT * FROM "+table+" WHERE id = "+id);
     }
-    public ResultSet selectSearch(String table, String criteria, String...fields){
+    public List selectSearch(String table, String criteria, String...fields){
         return this.execSelect("SELECT * FROM "+table+this.likeQuery(criteria,fields));
     }
 
-    public ResultSet rawSelect(String query){
+    public List rawSelect(String query){
         return this.execSelect(query);
     }
 
@@ -150,12 +151,12 @@ public class Database {
 
     private Database() {
         try {
+            Class.forName("org.sqlite.JDBC");
             if(!this.databaseExists()){
                 Logger.warning("Database doesn't exists");
                 this.migrate(Candidate.getMigration());
             }
-            this.getConnection().close();
-            Class.forName("org.sqlite.JDBC");
+            //Class.forName("org.sqlite.JDBC");
         } catch (Exception e) {
             Logger.except(e.getMessage());
         }
@@ -165,7 +166,7 @@ public class Database {
         return this.databaseExists();
     }
 
-    public ResultSet execute(Query query) {
+    public List<Integer> execute(Query query) {
         return this.execUpdate(query);
     }
 }

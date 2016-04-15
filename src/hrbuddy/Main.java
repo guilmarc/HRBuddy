@@ -21,9 +21,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("Views/MainView.fxml"));
 
-        Candidate c = Candidate.find(5);
-        Logger.debug(c.toString());
-
         Database.getInstance().getStatus();
         Database.getInstance().getConnection().close();
         primaryStage.setTitle("HRBuddy");

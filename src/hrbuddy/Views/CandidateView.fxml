@@ -35,19 +35,19 @@
               </rowConstraints>
                <children>
                   <Label text="Titre" GridPane.halignment="LEFT" />
-                  <ComboBox fx:id="titleComboBox" prefHeight="27.0" prefWidth="124.0" GridPane.columnIndex="1" />
+                  <ComboBox fx:id="titleComboBox" onAction="#onInputValueChanged" prefHeight="27.0" prefWidth="124.0" GridPane.columnIndex="1" />
                   <Label text="Prénom" GridPane.rowIndex="1" />
                   <Label text="Nom" GridPane.rowIndex="2" />
                   <Label text="Adresse" GridPane.rowIndex="3" />
                   <Label text="Téléphone domicile" GridPane.rowIndex="4" />
                   <Label text="Téléphone mobile" GridPane.rowIndex="5" />
                   <Label text="Courriel" GridPane.rowIndex="6" />
-                  <TextField fx:id="firstnameTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="lastnameTextField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <TextField fx:id="homephoneTextField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <TextField fx:id="mobilephoneTextField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <TextField fx:id="emailTextField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                  <TextField fx:id="addressTextField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField fx:id="firstnameTextField" onAction="#onInputValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <TextField fx:id="lastnameTextField" onAction="#onInputValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <TextField fx:id="homephoneTextField" onAction="#onInputValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextField fx:id="mobilephoneTextField" onAction="#onInputValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <TextField fx:id="emailTextField" onAction="#onInputValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <TextField fx:id="addressTextField" onAction="#onInputValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>
             </GridPane>
          </children>
@@ -72,7 +72,7 @@
       <ToolBar prefHeight="40.0" prefWidth="830.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <Button fx:id="newButton" mnemonicParsing="false" onAction="#newCandidate" text="Nouveau" />
-            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveCandidate" text="Sauvegarder" />
+            <Button fx:id="saveButton" mnemonicParsing="false" onAction="#storeCandidate" text="Sauvegarder" />
             <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="5.0" />
             <Button fx:id="searchButton" mnemonicParsing="false" text="Rechercher" />
             <Separator orientation="VERTICAL" prefHeight="0.0" prefWidth="5.0" />
