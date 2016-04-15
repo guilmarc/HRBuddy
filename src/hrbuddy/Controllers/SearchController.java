@@ -1,4 +1,4 @@
-package hrbuddy;
+package hrbuddy.Controllers;
 
 import hrbuddy.Database.Database;
 import hrbuddy.Models.Candidate;
@@ -19,9 +19,10 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
-public class SearchController implements Initializable {
+public class SearchController implements Initializable, ControlledScreen {
 
 
+    public TableColumn idColumn;
     @FXML
     private TextField searchTextField;
 
@@ -49,18 +50,26 @@ public class SearchController implements Initializable {
     @FXML
     private TableColumn<Candidate, String> emailColumn;
 
+    private MainController parent;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         jobtypeComboBox.getItems().addAll("TEST","TEST");
 
 
+        idColumn.setCellValueFactory(new PropertyValueFactory<Candidate,String>("id"));
         firstnameColumn.setCellValueFactory(new PropertyValueFactory<Candidate,String>("firstname"));
         lastnameColumn.setCellValueFactory(new PropertyValueFactory<Candidate,String>("lastname"));
         telephoneColumn.setCellValueFactory(new PropertyValueFactory<Candidate,String>("HomePhone"));
         cellphoneColumn.setCellValueFactory(new PropertyValueFactory<Candidate,String>("CellPhone"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<Candidate,String>("email"));
 
-        buildSearchTextFieldData();
+        //buildSearchTextFieldData();
+    }
+    public void setScreenParent(MainController parent){
+        this.parent = parent;
+    }
+    public void loadRecord(int id){
     }
 
     public void handleSearchTextFieldAction(ActionEvent event) {
@@ -78,7 +87,9 @@ public class SearchController implements Initializable {
     public void handleResultTableViewDoubleClick(MouseEvent mouseEvent) {
         if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
             if(mouseEvent.getClickCount() == 2){
+                int id = Integer.parseInt(this.resultTableView.getSelectionModel().getSelectedItem().getId());
                 System.out.println("Double clicked");
+                this.parent.loadCandidateTab(id);
             }
         }
     }
@@ -88,8 +99,7 @@ public class SearchController implements Initializable {
 
 
     public void buildSearchTextFieldData(){
-        candidates = FXCollections.observableArrayList();
-        candidates = (ObservableList<Candidate>)Candidate.search(this.searchTextField.getText(), "firstname");
+        candidates = FXCollections.observableArrayList(Candidate.search(this.searchTextField.getText()));
         resultTableView.setItems(candidates);
     }
 

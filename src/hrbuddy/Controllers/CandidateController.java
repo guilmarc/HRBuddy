@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 /**
  * Created by nboisvert on 2016-04-12.
  */
-public class CandidateController implements Initializable{
+public class CandidateController implements Initializable, ControlledScreen{
     public ComboBox genderComboBox;
     public TextField firstnameTextField;
     public TextField lastnameTextField;
@@ -30,6 +30,8 @@ public class CandidateController implements Initializable{
     protected String candidate_id = "-1";
     protected Candidate candidate;
     protected boolean editionMode = false;
+    protected MainController parent;
+
 
     public Button newButton;
     public Button saveButton;
@@ -42,6 +44,14 @@ public class CandidateController implements Initializable{
                     "Homme",
                     "Femme"
             );
+
+    public void setScreenParent(MainController parent){
+        this.parent = parent;
+    }
+    public void loadRecord(int id){
+        this.candidate_id = String.valueOf(id);
+        this.loadCandidate();
+    }
 
     public void initEvents(){
         firstnameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -112,14 +122,26 @@ public class CandidateController implements Initializable{
 
 
     public void storeCandidate(ActionEvent actionEvent) {
-        Candidate candidate = new Candidate(
-                this.firstnameTextField.getText(),
-                this.lastnameTextField.getText(),
-                this.addressTextField.getText(),
-                this.emailTextField.getText(),
-                this.homephoneTextField.getText(),
-                this.mobilephoneTextField.getText()
-        );
+        Candidate candidate;
+        if(this.candidate_id.equals("-1")) {
+            candidate = new Candidate(
+                    this.firstnameTextField.getText(),
+                    this.lastnameTextField.getText(),
+                    this.addressTextField.getText(),
+                    this.emailTextField.getText(),
+                    this.homephoneTextField.getText(),
+                    this.mobilephoneTextField.getText()
+            );
+        }
+        else{
+            candidate = Candidate.find(Integer.parseInt(this.candidate_id));
+            candidate.setFirstname(this.firstnameTextField.getText());
+            candidate.setLastname(this.lastnameTextField.getText());
+            candidate.setAddress(this.addressTextField.getText());
+            candidate.setEmail(this.emailTextField.getText());
+            candidate.setHomePhone(this.homephoneTextField.getText());
+            candidate.setCellPhone(this.mobilephoneTextField.getText());
+        }
         candidate.save();
         this.editionMode = false;
         this.idTextField.setText(candidate.getId());

@@ -16,6 +16,9 @@ import java.sql.ResultSet;
 import java.util.List;
 
 public class Main extends Application {
+    private final int SCENE_WIDTH = 1024;
+    private final int SCENE_HEIGHT = 768;
+    private final String APP_NAME = "HRBuddy";
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -23,8 +26,10 @@ public class Main extends Application {
 
         Database.getInstance().getStatus();
         Database.getInstance().getConnection().close();
-        primaryStage.setTitle("HRBuddy");
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setTitle(this.APP_NAME);
+        primaryStage.setScene(new Scene(root,this.SCENE_WIDTH,this.SCENE_HEIGHT));
+        primaryStage.setMinHeight(this.SCENE_HEIGHT);
+        primaryStage.setMinWidth(this.SCENE_WIDTH);
         primaryStage.show();
     }
 

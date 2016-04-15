@@ -125,6 +125,7 @@ public class Database {
 
     private String likeQuery(String criteria, String...fields){
         String output = " WHERE ";
+        criteria = criteria.replace("\'","\'\'");
         criteria = "'%"+criteria+"%'";
         for (int i = 0; i < fields.length; i++){
             output += fields[i]+" LIKE "+criteria;
