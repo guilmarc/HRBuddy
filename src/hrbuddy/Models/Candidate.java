@@ -20,9 +20,10 @@ import java.util.Map;
  * Created by nboisvert on 16-04-11.
  */
 
-public class Candidate {
+public class Candidate implements Model{
     protected static String[] search_fields = {"firstname","lastname","address","email","home_phone","cell_phone"};
     protected static String table = "candidates";
+    protected static String migration_file = "candidates.sql";
 
     protected String id;
     protected String firstname;
@@ -192,6 +193,32 @@ public class Candidate {
         }
         return candidates;
     }
+
+    public static List<Candidate> raw(String query){
+        List<HashMap<String,String>> list = Database.getInstance().rawSelect(query);
+        List<Candidate> candidates = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++){
+            candidates.add(new Candidate(list.get(i)));
+        }
+        return candidates;
+
+    }
+    /**
+     * Return every instances of the table where at least one field from "search_fields" matched
+     *
+     * @param criteria, String of the search criteria
+     * @param search_fields, String or list of string with all the field to search within
+     * @return List of the matched candidates
+     */
+    public static List<Candidate> search(String criteria, List<String> search_fields){
+        List<HashMap<String,String>> list = Database.getInstance().selectSearch(Candidate.table,criteria, search_fields);
+        List<Candidate> candidates = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++){
+            candidates.add(new Candidate(list.get(i)));
+        }
+        return candidates;
+
+    }
     /**
      * Return every instances of the table where at least one field from "search_fields" matched
      *
@@ -240,6 +267,9 @@ public class Candidate {
                 "home_phone varchar(150)," +
                 "email varchar(150)" +
                 ");";
-        return new Migration("Candidate",table, "candidates.sql");
+        return new Migration("Candidate",table, Candidate.migration_file);
+    }
+    public static String getTable(){
+        return Candidate.table;
     }
 }

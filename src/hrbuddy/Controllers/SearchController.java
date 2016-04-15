@@ -7,22 +7,28 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class SearchController implements Initializable, ControlledScreen {
 
 
     public TableColumn idColumn;
+    public CheckBox firstnameCheckBox;
+    public CheckBox lastnameCheckBox;
+    public CheckBox addressCheckBox;
+    public CheckBox emailCheckBox;
+    public CheckBox homephoneCheckBox;
+    public CheckBox cellphoneCheckBox;
+    public Button searchButton;
     @FXML
     private TextField searchTextField;
 
@@ -99,7 +105,26 @@ public class SearchController implements Initializable, ControlledScreen {
 
 
     public void buildSearchTextFieldData(){
-        candidates = FXCollections.observableArrayList(Candidate.search(this.searchTextField.getText()));
+        List<String> fields = new ArrayList<>();
+        if(this.firstnameCheckBox.isSelected()){
+            fields.add("firstname");
+        }
+        if(this.lastnameCheckBox.isSelected()){
+            fields.add("lastname");
+        }
+        if(this.addressCheckBox.isSelected()){
+            fields.add("address");
+        }
+        if(this.emailCheckBox.isSelected()){
+            fields.add("email");
+        }
+        if(this.homephoneCheckBox.isSelected()){
+            fields.add("home_phone");
+        }
+        if(this.cellphoneCheckBox.isSelected()){
+            fields.add("cell_phone");
+        }
+        candidates = FXCollections.observableArrayList(Candidate.search(this.searchTextField.getText(),fields));
         resultTableView.setItems(candidates);
     }
 

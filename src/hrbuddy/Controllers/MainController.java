@@ -22,8 +22,8 @@ import java.util.Map;
  */
 public class MainController extends TabPane{
     protected Map<String, View> views = new HashMap<String,View>(){{
-        put("candidate",new View("Candidat", "../Views/CandidateView.fxml"));
-        put("search_candidate",new View("Recherche candidat", "../Views/SearchView.fxml"));
+        put("candidate",new View("Candidat", "CandidateView.fxml"));
+        put("search_candidate",new View("Recherche candidat", "SearchView.fxml"));
     }};
 
     public TabPane mainTabPane;

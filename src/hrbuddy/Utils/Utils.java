@@ -50,4 +50,7 @@ public class Utils {
     public static String escapeForSql(String string){
         return "\'"+string.replaceAll("\'","''")+"\'";
     }
+    public static String escapeForSql(String string, String borders){
+        return "\'"+borders+string.replaceAll("\'","''")+borders+"\'";
+    }
 }

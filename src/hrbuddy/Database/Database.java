@@ -11,10 +11,7 @@ import javafx.scene.control.Alert;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by nboisvert on 16-04-11.
@@ -118,18 +115,33 @@ public class Database {
     public List selectSearch(String table, String criteria, String...fields){
         return this.execSelect("SELECT * FROM "+table+this.likeQuery(criteria,fields));
     }
-
+    public List selectSearch(String table, String criteria, List<String> fields){
+        return this.execSelect("SELECT * FROM "+table+this.likeQuery(criteria,fields));
+    }
     public List rawSelect(String query){
         return this.execSelect(query);
     }
 
-    private String likeQuery(String criteria, String...fields){
+    public String likeQuery(String criteria, String...fields){
         String output = " WHERE ";
         criteria = criteria.replace("\'","\'\'");
         criteria = "'%"+criteria+"%'";
         for (int i = 0; i < fields.length; i++){
             output += fields[i]+" LIKE "+criteria;
             if(i < (fields.length-1)){
+                output += " OR ";
+            }
+        }
+        return output;
+    }
+
+    public String likeQuery(String criteria, List<String> fields){
+        String output = " WHERE ";
+        criteria = criteria.replace("\'","\'\'");
+        criteria = "'%"+criteria+"%'";
+        for (int i = 0; i < fields.size(); i++){
+            output += fields.get(i)+" LIKE "+criteria;
+            if(i < (fields.size()-1)){
                 output += " OR ";
             }
         }
