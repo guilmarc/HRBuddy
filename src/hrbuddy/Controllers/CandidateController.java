@@ -1,58 +1,113 @@
 package hrbuddy.Controllers;
 
 import hrbuddy.Models.Candidate;
+import hrbuddy.Models.Experience;
 import hrbuddy.Utils.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
  * Created by nboisvert on 2016-04-12.
  */
 public class CandidateController implements Initializable, ControlledScreen{
-    public ComboBox genderComboBox;
-    public TextField firstnameTextField;
-    public TextField lastnameTextField;
-    public TextField homephoneTextField;
-    public TextField mobilephoneTextField;
-    public TextField emailTextField;
-    public TextField addressTextField;
-    public TextField idTextField;
+    @FXML
+    private ComboBox genderComboBox;
+
+    @FXML
+    private TextField firstnameTextField;
+
+    @FXML
+    private TextField lastnameTextField;
+
+    @FXML
+    private TextField homephoneTextField;
+
+    @FXML
+    private TextField mobilephoneTextField;
+
+    @FXML
+    private TextField emailTextField;
+
+    @FXML
+    private TextField addressTextField;
+
+    @FXML
+    private TextField idTextField;
+
+    @FXML
+    private TableView experiencesTableView;
+
+    @FXML
+    private TableColumn experiencesFunctionColumn;
+
+    @FXML
+    private TableColumn experiencesStartDateColumn;
+
+    @FXML
+    private TableColumn experiencesEndDateColumn;
+
+    @FXML
+    private TableColumn experiencesOrganisationColumn;
+    @FXML
+    private Button newButton;
+
+    @FXML
+    private Button saveButton;
+
+    @FXML
+    private Button searchButton;
+
+    @FXML
+    private AnchorPane container;
+
+    //  Id of the candidate to show
     protected String candidate_id = "-1";
+
+    //  Instance of the shown candidate
     protected Candidate candidate;
+
+    //  Define if the form is in edition mode
     protected boolean editionMode = false;
+
+    //  References the parent view
     protected MainController parent;
 
+    //  List of the candidate's experiences
+    private ObservableList<Experience> experiences;
 
-    public Button newButton;
-    public Button saveButton;
-    public Button searchButton;
-    public AnchorPane container;
-
-    ObservableList<String> genderComboBoxValues =
-            FXCollections.observableArrayList(
-                    "-",
-                    "Homme",
-                    "Femme"
-            );
-
+    /**
+     * References the main parent of the view, the global container
+     *
+     * @param parent
+     */
     public void setScreenParent(MainController parent){
         this.parent = parent;
     }
+
+    /**
+     * Assign the record id to be presented by the form
+     *
+     * @param id
+     */
     public void loadRecord(int id){
         this.candidate_id = String.valueOf(id);
         this.loadCandidate();
     }
 
+    /**
+     * Initialize form events, like TextField leaving
+     */
     public void initEvents(){
         firstnameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             this.onInputValueChanged(null);
@@ -74,20 +129,49 @@ public class CandidateController implements Initializable, ControlledScreen{
         });
     }
 
+    /**
+     * Initialize tables and assign cell factory
+     */
+    public void initTables(){
+        experiencesFunctionColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("job_function"));
+        experiencesStartDateColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("start_date"));
+        experiencesEndDateColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("end_date"));
+        experiencesOrganisationColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("organisation"));
+    }
+
+    /**
+     * Initialize everything else. This method is executed first on view load
+     *
+     * @param url
+     * @param bundle
+     */
     public void initialize(URL url, ResourceBundle bundle){
         this.initEvents();
         this.initListValues();
+        this.initTables();
     }
 
+    /**
+     * Initialize every ComboBox contents
+     */
     private void initListValues() {
-        this.genderComboBox.setValue(this.genderComboBoxValues);
+
     }
 
+    /**
+     * Event when the Nouveau button is pressed
+     *
+     * @param actionEvent
+     */
     public void newCandidate(ActionEvent actionEvent) {
         this.candidate_id = "-1";
+        this.candidate = null;
         this.clearForm();
     }
 
+    /**
+     * Fill the form with empty values
+     */
     public void clearForm(){
         this.firstnameTextField.setText("");
         this.lastnameTextField.setText("");
@@ -97,6 +181,9 @@ public class CandidateController implements Initializable, ControlledScreen{
         this.idTextField.setText("");
     }
 
+    /**
+     * Fill the form with the fetched candidate.
+     */
     public void fillForm(){
         if(this.candidate != null){
             this.firstnameTextField.setText(this.candidate.getFirstname());
@@ -105,12 +192,20 @@ public class CandidateController implements Initializable, ControlledScreen{
             this.homephoneTextField.setText(this.candidate.getHomePhone());
             this.mobilephoneTextField.setText(this.candidate.getCellPhone());
             this.idTextField.setText(this.candidate.getId());
+            List<Experience> exp_list = this.candidate.getExperiences(true);
+            if(exp_list.size() > 0){
+                experiences = FXCollections.observableArrayList(exp_list);
+                experiencesTableView.setItems(experiences);
+            }
         }
         else{
-            Logger.debug("Couldn't load id : "+this.candidate_id);
+            this.clearForm();
         }
     }
 
+    /**
+     * Fetch the candidate from the database
+     */
     public void loadCandidate(){
         int id = Integer.parseInt(this.candidate_id);
         if(id > 0) {
@@ -118,9 +213,17 @@ public class CandidateController implements Initializable, ControlledScreen{
             this.fillForm();
             Logger.debug(String.valueOf(id));
         }
+        else{
+            Logger.debug("Couldn't load id : "+this.candidate_id);
+        }
     }
 
-
+    /**
+     * Event when the Sauvegarder button is clicked, if the record was loaded from
+     * the database, then it updates, else it insert it
+     *
+     * @param actionEvent
+     */
     public void storeCandidate(ActionEvent actionEvent) {
         Candidate candidate;
         if(this.candidate_id.equals("-1")) {
@@ -148,11 +251,19 @@ public class CandidateController implements Initializable, ControlledScreen{
         eventTriggered();
     }
 
+    /**
+     * When form is modified, change the ui if needed
+     */
     public void eventTriggered(){
         this.saveButton.setDisable(!this.editionMode);
         this.newButton.setDisable(this.editionMode);
     }
 
+    /**
+     * Event when a TextField input is modified
+     *
+     * @param event
+     */
     public void onInputValueChanged(Event event) {
         this.editionMode = true;
         eventTriggered();

@@ -20,7 +20,7 @@ import java.util.Map;
  * Created by nboisvert on 16-04-11.
  */
 
-public class Candidate implements Model{
+public class Candidate{
     protected static String[] search_fields = {"firstname","lastname","address","email","home_phone","cell_phone"};
     protected static String table = "candidates";
     protected static String migration_file = "candidates.sql";
@@ -32,6 +32,7 @@ public class Candidate implements Model{
     protected String email;
     protected String home_phone;
     protected String cell_phone;
+    protected List<Experience> experiences;
     protected boolean stored = false;
 
     public Candidate(String firstname,String lastname,String address,String email,String home_phone,String cell_phone){
@@ -41,6 +42,7 @@ public class Candidate implements Model{
         this.email = email;
         this.home_phone = home_phone;
         this.cell_phone = cell_phone;
+        this.experiences = null;
         this.stored = false;
     }
     public Candidate(){
@@ -50,6 +52,7 @@ public class Candidate implements Model{
         this.email = "";
         this.home_phone = "";
         this.cell_phone = "";
+        this.experiences = null;
     }
     public Candidate(HashMap<String,String> list){
         this.id = (list.containsKey("id") ? list.get("id") : "");
@@ -59,22 +62,8 @@ public class Candidate implements Model{
         this.email = (list.containsKey("email") ? list.get("email") : "");
         this.home_phone = (list.containsKey("home_phone") ? list.get("home_phone") : "");
         this.cell_phone = (list.containsKey("cell_phone") ? list.get("cell_phone") : "");
+        this.experiences = null;
         this.stored = true;
-    }
-    public Candidate(ResultSet resultSet){
-        try{
-            this.id = resultSet.getString("id");
-            this.firstname = resultSet.getString("firstname");
-            this.lastname = resultSet.getString("lastname");
-            this.address = resultSet.getString("address");
-            this.email = resultSet.getString("email");
-            this.home_phone = resultSet.getString("home_phone");
-            this.cell_phone = resultSet.getString("cell_phone");
-            this.stored = true;
-        }
-        catch (Exception e){
-            Logger.except(e.getMessage());
-        }
     }
 
     public String getId(){
@@ -164,6 +153,16 @@ public class Candidate implements Model{
         else {
             return Integer.parseInt(this.id);
         }
+    }
+
+    public List<Experience> getExperiences(boolean refresh){
+        if((this.experiences == null || refresh) && this.stored == true){
+            this.experiences = Experience.related("candidate_id",Integer.parseInt(this.id));
+        }
+        else if(!this.stored || this.experiences == null){
+            this.experiences = new ArrayList<>();
+        }
+        return this.experiences;
     }
 
     /**

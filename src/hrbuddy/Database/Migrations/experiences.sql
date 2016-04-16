@@ -1,0 +1,1 @@
+insert into experiences (candidate_id, job_function,start_date,end_date,organisation) values (1,"Programmeur","2015-12-02","2016-03-01","CGI");

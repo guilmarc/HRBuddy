@@ -25,12 +25,12 @@ public class UpdateQuery implements Query {
         Iterator it = this.values.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
-            fields.add(pair.getKey()+" = "+Utils.escapeForSql(pair.getValue().toString()));
+            fields.add(pair.getKey()+"="+Utils.escapeForSql(pair.getValue().toString()));
             it.remove();
         }
         if(this.predicates.length() > 0){
            this.predicates = " WHERE "+this.predicates;
         }
-        return output+Utils.implode(",",fields)+this.predicates+";";
+        return output+Utils.implode(", ",fields)+this.predicates+";";
     }
 }

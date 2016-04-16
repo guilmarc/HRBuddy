@@ -3,6 +3,7 @@ package hrbuddy.Database;
 import hrbuddy.Controllers.DialogController;
 import hrbuddy.Database.QueryBuilder.Query;
 import hrbuddy.Models.Candidate;
+import hrbuddy.Models.Experience;
 import hrbuddy.Utils.Migration;
 import hrbuddy.Utils.Logger;
 import javafx.event.EventHandler;
@@ -38,6 +39,21 @@ public class Database {
         return DriverManager.getConnection(this.getConnectionString());
     }
 
+    private List<String> execSelectColumns(String query){
+        List<String> datas = new ArrayList<>();
+        try {
+            Connection connection = this.getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet results = statement.executeQuery(query);
+            datas = this.extractResultSetColumns(results);
+            connection.close();
+        }
+        catch (Exception e){
+            Logger.except(e.getMessage());
+        }
+        return datas;
+    }
+
     private List<HashMap<String,String>> execSelect(String query){
         List<HashMap<String,String>> datas = new ArrayList<>();
         try {
@@ -51,6 +67,16 @@ public class Database {
             Logger.except(e.getMessage());
         }
         return datas;
+    }
+    private List<String> extractResultSetColumns(ResultSet rs) throws SQLException {
+        ResultSetMetaData md = rs.getMetaData();
+        int columns = md.getColumnCount();
+        List<String> list = new ArrayList<>();
+        for(int i=1; i<=columns; ++i){
+            list.add(md.getColumnName(i));
+        }
+
+        return list;
     }
     private List<HashMap<String,String>> extractResultSet(ResultSet rs) throws SQLException {
         ResultSetMetaData md = rs.getMetaData();
@@ -105,10 +131,18 @@ public class Database {
         return keys;
     }
 
+    public List selectColumns(String table){
+        String query = "SELECT * FROM "+table+" LIMIT 1";
+        return this.execSelectColumns(query);
+    }
+
     public List select(String table){
         return this.execSelect("SELECT * FROM "+table);
     }
 
+    public List selectId(String table, int id, String key){
+        return this.execSelect("SELECT * FROM "+table+" WHERE "+key+" = "+id);
+    }
     public List selectId(String table, int id){
         return this.execSelect("SELECT * FROM "+table+" WHERE id = "+id);
     }
@@ -156,13 +190,15 @@ public class Database {
         return true;
     }
 
-    public void migrate(Migration migration){
-        this.execUpdate(migration.getTableCreation());
-        Logger.migrate(migration.getName()+" table created");
-        for(int i = 0; i < migration.getInsertRows().size(); i++){
-            this.execUpdate(migration.getInsertRows().get(i));
+    public void migrate(Migration...migration){
+        for(int i = 0; i < migration.length; i++) {
+            this.execUpdate(migration[i].getTableCreation());
+            Logger.migrate(migration[i].getName() + " table created");
+            for (int j = 0; j < migration[i].getInsertRows().size(); j++) {
+                this.execUpdate(migration[i].getInsertRows().get(j));
+            }
+            Logger.migrate(migration[i].getName() + " " + migration[i].getInsertRows().size() + " rows");
         }
-        Logger.migrate(migration.getName()+" "+ migration.getInsertRows().size()+" rows");
     }
 
     private Database() {
@@ -172,7 +208,8 @@ public class Database {
                 Alert alert = DialogController.noButton("Appuyez sur OK pour migrer la base de données");
                 Logger.warning("Database doesn't exists");
 
-                this.migrate(Candidate.getMigration());
+                this.migrate(Migration.getAllMigrations());
+
                 alert.close();
             }
             //Class.forName("org.sqlite.JDBC");

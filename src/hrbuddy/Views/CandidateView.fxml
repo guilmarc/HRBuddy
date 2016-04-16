@@ -7,6 +7,8 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -60,9 +62,19 @@
       </HBox>
       <TabPane layoutY="304.0" prefHeight="257.0" prefWidth="769.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="304.0">
         <tabs>
-          <Tab text="Untitled Tab 1">
+          <Tab text="Expériences">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="experiencesTableView" editable="true" prefHeight="228.0" prefWidth="769.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn fx:id="experiencesFunctionColumn" prefWidth="283.0" text="Fonctions" />
+                            <TableColumn fx:id="experiencesStartDateColumn" minWidth="0.0" prefWidth="87.0" text="Date de début" />
+                              <TableColumn fx:id="experiencesEndDateColumn" prefWidth="82.0" text="Date de fin" />
+                              <TableColumn fx:id="experiencesOrganisationColumn" prefWidth="316.0" text="Organisation" />
+                          </columns>
+                        </TableView>
+                     </children></AnchorPane>
             </content>
           </Tab>
           <Tab text="Untitled Tab 2">

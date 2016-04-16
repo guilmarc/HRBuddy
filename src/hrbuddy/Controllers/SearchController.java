@@ -19,16 +19,30 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class SearchController implements Initializable, ControlledScreen {
+    @FXML
+    private TableColumn idColumn;
 
+    @FXML
+    private CheckBox firstnameCheckBox;
 
-    public TableColumn idColumn;
-    public CheckBox firstnameCheckBox;
-    public CheckBox lastnameCheckBox;
-    public CheckBox addressCheckBox;
-    public CheckBox emailCheckBox;
-    public CheckBox homephoneCheckBox;
-    public CheckBox cellphoneCheckBox;
-    public Button searchButton;
+    @FXML
+    private CheckBox lastnameCheckBox;
+
+    @FXML
+    private CheckBox addressCheckBox;
+
+    @FXML
+    private CheckBox emailCheckBox;
+
+    @FXML
+    private CheckBox homephoneCheckBox;
+
+    @FXML
+    private CheckBox cellphoneCheckBox;
+
+    @FXML
+    private Button searchButton;
+
     @FXML
     private TextField searchTextField;
 
@@ -55,6 +69,8 @@ public class SearchController implements Initializable, ControlledScreen {
 
     @FXML
     private TableColumn<Candidate, String> emailColumn;
+
+    private ObservableList<Candidate> candidates;
 
     private MainController parent;
 
@@ -101,7 +117,6 @@ public class SearchController implements Initializable, ControlledScreen {
     }
 
 
-    private ObservableList<Candidate> candidates;
 
 
     public void buildSearchTextFieldData(){
@@ -127,33 +142,4 @@ public class SearchController implements Initializable, ControlledScreen {
         candidates = FXCollections.observableArrayList(Candidate.search(this.searchTextField.getText(),fields));
         resultTableView.setItems(candidates);
     }
-
-
-
-
-    /*public void buildSearchTextFieldData2(){
-        candidates = FXCollections.observableArrayList();
-        try{
-            String SQL = "Select * from viewSearchCandidates WHERE SearchField LIKE '%" + this.searchTextField.getText() +  "%'" ;  // + this.searchTextField.getText();
-            ResultSet rs = Database.getInstance().getConnection().createStatement().executeQuery(SQL);
-
-            while(rs.next()){
-                Candidate candidate = new Candidate();
-                candidate.setFirstname(rs.getString("firstname"));
-                candidate.setLastname(rs.getString("lastname"));
-                candidate.setHomePhone(rs.getString("home_phone"));
-                candidate.setCellPhone(rs.getString("cell_phone"));
-                candidate.setEmail(rs.getString("email"));
-
-                candidates.add(candidate);
-            }
-            resultTableView.setItems(candidates);
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            System.out.println("Error on Building Data");
-        }
-    }*/
-
-
 }

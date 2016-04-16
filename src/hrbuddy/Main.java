@@ -5,6 +5,9 @@ import hrbuddy.Database.Database;
 import hrbuddy.Database.QueryBuilder.Query;
 import hrbuddy.Database.QueryBuilder.SearchQuery;
 import hrbuddy.Models.Candidate;
+import hrbuddy.Models.Candidate2;
+import hrbuddy.Models.Experience;
+import hrbuddy.Models.Model;
 import hrbuddy.Utils.Logger;
 import hrbuddy.Utils.Utils;
 import hrbuddy.Views.View;
@@ -29,6 +32,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource(this.MAIN_VIEW));
+
 
         Database.getInstance().getStatus();
         Database.getInstance().getConnection().close();

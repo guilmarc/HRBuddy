@@ -1,5 +1,8 @@
 package hrbuddy.Utils;
 
+import hrbuddy.Models.Candidate;
+import hrbuddy.Models.Experience;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -69,5 +72,12 @@ public class Migration {
 
     public static void setMigrationFolder(String migration_folder) {
         Migration.migration_folder = migration_folder;
+    }
+
+    public static Migration[] getAllMigrations(){
+        Migration[] migrations = new Migration[2];
+        migrations[0] = Candidate.getMigration();
+        migrations[1] = Experience.getMigration();
+        return migrations;
     }
 }

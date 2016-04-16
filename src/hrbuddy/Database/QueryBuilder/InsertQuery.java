@@ -27,6 +27,6 @@ public class InsertQuery implements Query {
             value.add(Utils.escapeForSql(pair.getValue().toString()));
             it.remove();
         }
-        return query+"("+Utils.implode(",",fields)+") VALUES ("+Utils.implode(",",value)+");";
+        return query+" ("+Utils.implode(",",fields)+") VALUES ("+Utils.implode(",",value)+");";
     }
 }
