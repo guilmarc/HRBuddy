@@ -1,16 +1,14 @@
 package hrbuddy.Models;
 
 import hrbuddy.Database.Database;
-import hrbuddy.Database.QueryBuilder.InsertQuery;
-import hrbuddy.Database.QueryBuilder.Query;
-import hrbuddy.Database.QueryBuilder.UpdateQuery;
+import hrbuddy.Database.QueryBuilder.Predicates.FieldSet;
+import hrbuddy.Database.QueryBuilder.Predicates.Predicate;
+import hrbuddy.Database.QueryBuilder.Predicates.PredicateList;
+import hrbuddy.Database.QueryBuilder.Predicates.SearchPredicate;
+import hrbuddy.Database.QueryBuilder.Query.*;
 import hrbuddy.Utils.Logger;
-import hrbuddy.Utils.Migration;
-import sun.rmi.runtime.Log;
+import hrbuddy.Database.Migrations.Migration;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -117,10 +115,12 @@ public class Candidate{
         return values;
     }
 
-    public Query getQuery(){
-        Query query;
+    public Queryable getQuery(){
+        Queryable query;
         if(this.stored){
-            query = new UpdateQuery(Candidate.table,this.getMap(), ("id = "+this.id));
+            PredicateList list = new PredicateList();
+            list.getPredicates().add(new Predicate("id",String.valueOf(this.id)));
+            query = new UpdateQuery(Candidate.table,this.getMap(), list);
         }
         else{
             query = new InsertQuery(Candidate.table,this.getMap());
@@ -185,7 +185,7 @@ public class Candidate{
      * @return List of the matched candidates
      */
     public static List<Candidate> search(String criteria){
-        List<HashMap<String,String>> list = Database.getInstance().selectSearch(Candidate.table,criteria, Candidate.search_fields);
+        List<HashMap<String,String>> list = Database.getInstance().selectSearch(Candidate.table, new SearchPredicate(criteria,Candidate.search_fields), new FieldSet());
         List<Candidate> candidates = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){
             candidates.add(new Candidate(list.get(i)));
@@ -193,7 +193,7 @@ public class Candidate{
         return candidates;
     }
 
-    public static List<Candidate> raw(String query){
+    public static List<Candidate> raw(Queryable query){
         List<HashMap<String,String>> list = Database.getInstance().rawSelect(query);
         List<Candidate> candidates = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){
@@ -210,7 +210,7 @@ public class Candidate{
      * @return List of the matched candidates
      */
     public static List<Candidate> search(String criteria, List<String> search_fields){
-        List<HashMap<String,String>> list = Database.getInstance().selectSearch(Candidate.table,criteria, search_fields);
+        List<HashMap<String,String>> list = Database.getInstance().selectSearch(Candidate.table, new SearchPredicate(criteria,Candidate.search_fields));
         List<Candidate> candidates = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){
             candidates.add(new Candidate(list.get(i)));
@@ -226,7 +226,7 @@ public class Candidate{
      * @return List of the matched candidates
      */
     public static List<Candidate> search(String criteria, String...search_fields){
-        List<HashMap<String,String>> list = Database.getInstance().selectSearch(Candidate.table,criteria, search_fields);
+        List<HashMap<String,String>> list = Database.getInstance().selectSearch(Candidate.table, new SearchPredicate(criteria,Candidate.search_fields));
         List<Candidate> candidates = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){
             candidates.add(new Candidate(list.get(i)));

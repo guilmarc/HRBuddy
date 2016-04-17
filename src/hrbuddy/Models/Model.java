@@ -1,9 +1,12 @@
 package hrbuddy.Models;
 
 import hrbuddy.Database.Database;
-import hrbuddy.Database.QueryBuilder.InsertQuery;
-import hrbuddy.Database.QueryBuilder.Query;
-import hrbuddy.Database.QueryBuilder.UpdateQuery;
+import hrbuddy.Database.QueryBuilder.Predicates.Predicate;
+import hrbuddy.Database.QueryBuilder.Predicates.PredicateList;
+import hrbuddy.Database.QueryBuilder.Query.InsertQuery;
+import hrbuddy.Database.QueryBuilder.Query.Queryable;
+import hrbuddy.Database.QueryBuilder.Query.UpdateQuery;
+import hrbuddy.Exceptions.AttributeNotFoundException;
 import hrbuddy.Utils.Logger;
 
 import java.util.*;
@@ -22,44 +25,43 @@ public abstract class Model{
 
     public Model(HashMap<String,String> values){
         this.setAttributes(new HashMap<>());
-        Iterator it = values.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<String,String> pair = (Map.Entry)it.next();
-            String key = pair.getKey();
-            this.getAttributes().put(key,new Attribute(pair.getValue()));
+
+        for(Map.Entry<String, String> entry : values.entrySet()) {
+            String key = entry.getKey();
+            this.getAttributes().put(key,new Attribute(entry.getValue()));
             if(key.equals(this.getPrimaryKey())){
-                this.id = Integer.parseInt(pair.getValue());
+                this.id = Integer.parseInt(entry.getValue());
             }
-            it.remove();
         }
         this.setStored(true);
     }
     public Model(){}
 
     public boolean setAttribute(String key,String value){
-        if(this.getAttributes().containsKey(key)) {
-            this.getAttribute(key).changeTo(value);
-            return this.getAttribute(key).hasChange();
+        try {
+            if (this.getAttributes().containsKey(key)) {
+                this.getAttribute(key).changeTo(value);
+                return this.getAttribute(key).hasChange();
+            }
+        }
+        catch (Exception e){
+            Logger.warning(e.getMessage());
         }
         return false;
     }
 
     public Map<String,String> getMap(){
         Map<String,String> values = new HashMap<>();
-        Iterator it = this.getAttributes().entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<String,Attribute> pair = (Map.Entry)it.next();
-            if(!pair.getKey().equals(this.getPrimaryKey())) {
-                values.put(pair.getKey(), pair.getValue().getValue());
+        for(Map.Entry<String, Attribute> entry : this.getAttributes().entrySet()) {
+            if(!entry.getKey().equals(this.getPrimaryKey())) {
+                values.put(entry.getKey(), entry.getValue().getValue());
             }
-            it.remove();
         }
-        Logger.warning(values.toString());
         return values;
     }
 
-    public Query getQuery(){
-        Query query;
+    public Queryable getQuery(){
+        Queryable query;
         Map<String,String> map = this.getMap();
         List<String> columns = this.tableColumns();
         for(int i = 0; i < columns.size(); i++){
@@ -68,23 +70,21 @@ public abstract class Model{
             }
         }
         if(this.isStored()){
-            query = new UpdateQuery(this.getTable(),map, ("id = "+this.id));
+            PredicateList list = new PredicateList();
+            list.getPredicates().add(new Predicate("id",String.valueOf(this.id)));
+            query = new UpdateQuery(this.getTable(),map, list);
         }
         else{
             query = new InsertQuery(this.getTable(),map);
         }
-        Logger.warning(query.getQuery());
         return query;
     }
 
     public boolean attributesHasChanged(){
-        Iterator it = this.getAttributes().entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<String,Attribute> pair = (Map.Entry)it.next();
-            if(pair.getValue().hasChange()){
+        for(Map.Entry<String, Attribute> entry : this.getAttributes().entrySet()) {
+            if(entry.getValue().hasChange()){
                 return true;
             }
-            it.remove();
         }
         return false;
     }
@@ -94,7 +94,6 @@ public abstract class Model{
     }
 
     public int save(){
-        Logger.debug(this._table);
         List<Integer> keys = Database.getInstance().execute(this.getQuery());
         if(!this.isStored()) {
             int key = -1;
@@ -116,11 +115,11 @@ public abstract class Model{
 
     //      GETTERS
 
-    public Attribute getAttribute(String key){
-        if(this._attributes.containsKey(key)) {
-            return this._attributes.get(key);
+    public Attribute getAttribute(String key) throws AttributeNotFoundException {
+        if(this.getAttributes().containsKey(key)) {
+            return this.getAttributes().get(key);
         }
-        return null;
+        throw new AttributeNotFoundException("Attribute "+key+" not found");
     }
 
     public String getPrimaryKey() {

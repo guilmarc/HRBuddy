@@ -1,4 +1,4 @@
-package hrbuddy.Database.QueryBuilder;
+package hrbuddy.Database.QueryBuilder.Query;
 
 import hrbuddy.Utils.Utils;
 
@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Created by nboisvert on 2016-04-12.
  */
-public class InsertQuery implements Query {
+public class InsertQuery implements Queryable {
     String table = "";
     Map<String,String> values = new HashMap<String, String>();
 

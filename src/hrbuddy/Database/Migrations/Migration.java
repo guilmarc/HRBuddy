@@ -1,10 +1,10 @@
-package hrbuddy.Utils;
+package hrbuddy.Database.Migrations;
 
 import hrbuddy.Models.Candidate;
 import hrbuddy.Models.Experience;
+import hrbuddy.Utils.Logger;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;

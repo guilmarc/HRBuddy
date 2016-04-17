@@ -1,16 +1,18 @@
 package hrbuddy.Database;
 
 import hrbuddy.Controllers.DialogController;
-import hrbuddy.Database.QueryBuilder.Query;
-import hrbuddy.Models.Candidate;
-import hrbuddy.Models.Experience;
-import hrbuddy.Utils.Migration;
+import hrbuddy.Database.QueryBuilder.Predicates.FieldSet;
+import hrbuddy.Database.QueryBuilder.Predicates.Predicable;
+import hrbuddy.Database.QueryBuilder.Predicates.Predicate;
+import hrbuddy.Database.QueryBuilder.Query.*;
+import hrbuddy.Database.Migrations.Migration;
+import hrbuddy.Exceptions.QueryWithoutPredicateException;
 import hrbuddy.Utils.Logger;
-import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import sun.rmi.runtime.Log;
 
+import javax.management.Query;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.sql.*;
 import java.util.*;
 
@@ -54,16 +56,21 @@ public class Database {
         return datas;
     }
 
-    private List<HashMap<String,String>> execSelect(String query){
+    private List<HashMap<String,String>> execSelect(Queryable query){
         List<HashMap<String,String>> datas = new ArrayList<>();
         try {
             Connection connection = this.getConnection();
             Statement statement = connection.createStatement();
-            ResultSet results = statement.executeQuery(query);
+            ResultSet results = statement.executeQuery(query.getQuery());
             datas = this.extractResultSet(results);
             connection.close();
         }
         catch (Exception e){
+            try {
+                Logger.warning(query.getQuery().toString());
+            } catch (QueryWithoutPredicateException e1) {
+                e1.printStackTrace();
+            }
             Logger.except(e.getMessage());
         }
         return datas;
@@ -111,7 +118,7 @@ public class Database {
         }
         return keys;
     }
-    private List<Integer> execUpdate(Query query){
+    private List<Integer> execUpdate(Queryable query){
         List<Integer> keys = new ArrayList<>();
         try {
             Connection connection = this.getConnection();
@@ -131,29 +138,30 @@ public class Database {
         return keys;
     }
 
-    public List selectColumns(String table){
+    public List<String> selectColumns(String table){
         String query = "SELECT * FROM "+table+" LIMIT 1";
         return this.execSelectColumns(query);
     }
-
-    public List select(String table){
-        return this.execSelect("SELECT * FROM "+table);
+    public List<HashMap<String,String>> select(String table){
+        return this.execSelect(new SelectQuery(table));
     }
-
-    public List selectId(String table, int id, String key){
-        return this.execSelect("SELECT * FROM "+table+" WHERE "+key+" = "+id);
+    public List<HashMap<String,String>> selectId(String table, int id, String key){
+        return this.execSelect(new SelectQuery(table,new Predicate(key,String.valueOf(id))));
     }
-    public List selectId(String table, int id){
-        return this.execSelect("SELECT * FROM "+table+" WHERE id = "+id);
+    public List<HashMap<String,String>> selectId(String table, int id){
+        return this.execSelect(new SelectQuery(table,new Predicate("id",String.valueOf(id))));
     }
-    public List selectSearch(String table, String criteria, String...fields){
-        return this.execSelect("SELECT * FROM "+table+this.likeQuery(criteria,fields));
+    public List<HashMap<String,String>> selectSearch(String table, Predicable predicates, FieldSet fields){
+        return this.execSelect(new SelectQuery(table,predicates,fields));
     }
-    public List selectSearch(String table, String criteria, List<String> fields){
-        return this.execSelect("SELECT * FROM "+table+this.likeQuery(criteria,fields));
+    public List<HashMap<String,String>> selectSearch(String table, Predicable predicates){
+        return this.execSelect(new SelectQuery(table,predicates));
     }
-    public List rawSelect(String query){
+    public List<HashMap<String,String>> rawSelect(Queryable query){
         return this.execSelect(query);
+    }
+    public List<Integer> execute(Queryable query) {
+        return this.execUpdate(query);
     }
 
     public String likeQuery(String criteria, String...fields){
@@ -222,7 +230,4 @@ public class Database {
         return this.databaseExists();
     }
 
-    public List<Integer> execute(Query query) {
-        return this.execUpdate(query);
-    }
 }
