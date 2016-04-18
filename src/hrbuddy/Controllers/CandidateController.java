@@ -155,7 +155,7 @@ public class CandidateController implements Initializable, ControlledScreen{
      * Initialize every ComboBox contents
      */
     private void initListValues() {
-
+        genderComboBox.getItems().addAll("Homme", "Femme");
     }
 
     /**

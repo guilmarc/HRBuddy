@@ -17,50 +17,54 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="container" prefHeight="561.0" prefWidth="769.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hrbuddy.Controllers.CandidateController">
+<AnchorPane fx:id="container" prefHeight="561.0" prefWidth="769.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hrbuddy.Controllers.CandidateController">
    <children>
       <HBox layoutY="39.0" prefHeight="251.0" prefWidth="769.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0">
          <children>
-            <GridPane alignment="CENTER" prefHeight="246.0" prefWidth="371.0">
+            <GridPane alignment="CENTER" hgap="10.0" maxHeight="-Infinity" prefHeight="160.0" prefWidth="762.0" vgap="5.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="179.7815399169922" minWidth="10.0" prefWidth="133.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="179.7815399169922" minWidth="10.0" prefWidth="30.0" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="274.1314010620117" minWidth="10.0" prefWidth="238.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="274.1314010620117" minWidth="10.0" prefWidth="30.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="274.1314010620117" minWidth="10.0" prefWidth="238.0" />
               </columnConstraints>
               <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
+                  <TextField fx:id="idTextField" disable="true" GridPane.columnIndex="1" />
                   <Label text="Genre" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
                   <ComboBox fx:id="genderComboBox" onAction="#onInputValueChanged" prefHeight="27.0" prefWidth="124.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Prénom" GridPane.rowIndex="2" />
                   <Label text="Nom" GridPane.rowIndex="3" />
-                  <Label text="Adresse" GridPane.rowIndex="4" />
-                  <Label text="Téléphone domicile" GridPane.rowIndex="5" />
-                  <Label text="Téléphone mobile" GridPane.rowIndex="6" />
-                  <Label text="Courriel" GridPane.rowIndex="7" />
+                  <Label text="Adresse" GridPane.columnIndex="2" />
+                  <Label text="Tél. domicile" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label text="Tél. mobile" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Label text="Courriel" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                   <TextField fx:id="firstnameTextField" onAction="#onInputValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="lastnameTextField" onAction="#onInputValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <TextField fx:id="homephoneTextField" onAction="#onInputValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <TextField fx:id="mobilephoneTextField" onAction="#onInputValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                  <TextField fx:id="emailTextField" onAction="#onInputValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                  <TextField fx:id="addressTextField" onAction="#onInputValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <TextField fx:id="addressTextField" onAction="#onInputValueChanged" GridPane.columnIndex="3" />
+                  <TextField fx:id="homephoneTextField" onAction="#onInputValueChanged" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <TextField fx:id="mobilephoneTextField" onAction="#onInputValueChanged" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <TextField fx:id="emailTextField" onAction="#onInputValueChanged" GridPane.columnIndex="3" GridPane.rowIndex="3" />
                   <Label text="ID" />
-                  <TextField fx:id="idTextField" disable="true" GridPane.columnIndex="1" />
                </children>
+               <HBox.margin>
+                  <Insets top="10.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
             </GridPane>
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
-      <TabPane layoutY="304.0" prefHeight="257.0" prefWidth="769.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="304.0">
+      <TabPane layoutY="304.0" prefHeight="257.0" prefWidth="769.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="220.0">
         <tabs>
           <Tab text="Expériences">
             <content>
@@ -69,7 +73,7 @@
                         <TableView fx:id="experiencesTableView" editable="true" prefHeight="228.0" prefWidth="769.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
                             <TableColumn fx:id="experiencesFunctionColumn" prefWidth="283.0" text="Fonctions" />
-                            <TableColumn fx:id="experiencesStartDateColumn" minWidth="0.0" prefWidth="87.0" text="Date de début" />
+                            <TableColumn fx:id="experiencesStartDateColumn" minWidth="0.0" prefWidth="87.0" text="Date début" />
                               <TableColumn fx:id="experiencesEndDateColumn" prefWidth="82.0" text="Date de fin" />
                               <TableColumn fx:id="experiencesOrganisationColumn" prefWidth="316.0" text="Organisation" />
                           </columns>
@@ -77,11 +81,49 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab text="Untitled Tab 2">
+          <Tab text="Formations">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn prefWidth="93.0" text="Niveau" />
+                            <TableColumn prefWidth="314.0" text="Diplôme" />
+                              <TableColumn minWidth="0.0" prefWidth="101.0" text="Date" />
+                          </columns>
+                        </TableView>
+                     </children></AnchorPane>
             </content>
           </Tab>
+            <Tab text="Applications">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="Date" />
+                            <TableColumn prefWidth="306.0" text="Emploi postulé" />
+                              <TableColumn prefWidth="120.0" text="Statut" />
+                              <TableColumn prefWidth="195.0" text="Raison" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab text="Suggestions">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView layoutX="193.0" layoutY="12.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn prefWidth="768.0" text="Postes suggérés" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
         </tabs>
       </TabPane>
       <ToolBar prefHeight="40.0" prefWidth="830.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -92,5 +134,14 @@
             <Button fx:id="searchButton" mnemonicParsing="false" text="Rechercher" />
         </items>
       </ToolBar>
+      <HBox prefHeight="30.0" prefWidth="200.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <Button id="addButton" mnemonicParsing="false" text="Ajouter" />
+            <Button fx:id="removeButton" mnemonicParsing="false" text="Supprimer" />
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
    </children>
 </AnchorPane>

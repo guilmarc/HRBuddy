@@ -1,6 +1,5 @@
 package hrbuddy.Controllers;
 
-import hrbuddy.Database.Database;
 import hrbuddy.Models.Candidate;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +12,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -71,6 +69,9 @@ public class SearchController implements Initializable, ControlledScreen {
     private TableColumn<Candidate, String> cellphoneColumn;
 
     @FXML
+    private TableColumn<Candidate, String> addressColumn;
+
+    @FXML
     private TableColumn<Candidate, String> emailColumn;
 
     private ObservableList<Candidate> candidates;
@@ -79,7 +80,8 @@ public class SearchController implements Initializable, ControlledScreen {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        jobtypeComboBox.getItems().addAll("TEST","TEST");
+        jobtypeComboBox.getItems().addAll("Adjoint","Cadre", "Machiniste", "Manoeuvre", "Soudeur");
+        formationComboBox.getItems().addAll("Secondaire", "Professionnelle", "Collégiale", "Universitaire", "Autre");
 
 
         idColumn.setCellValueFactory(new PropertyValueFactory<Candidate,String>("id"));
@@ -87,6 +89,7 @@ public class SearchController implements Initializable, ControlledScreen {
         lastnameColumn.setCellValueFactory(new PropertyValueFactory<Candidate,String>("lastname"));
         telephoneColumn.setCellValueFactory(new PropertyValueFactory<Candidate,String>("HomePhone"));
         cellphoneColumn.setCellValueFactory(new PropertyValueFactory<Candidate,String>("CellPhone"));
+        addressColumn.setCellValueFactory(new PropertyValueFactory<Candidate,String>("address"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<Candidate,String>("email"));
 
         //buildSearchTextFieldData();

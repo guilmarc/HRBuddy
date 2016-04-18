@@ -1,0 +1,33 @@
+.root {
+-fx-font-size: 12pt;
+-fx-font-family: "Myriad Pro";
+-fx-base: rgb(144, 152, 255);
+-fx-background: rgb(225, 228, 203);
+}
+
+#addButton {
+    -fx-graphic: url("http://www.veryicon.com/icon/24/System/Aesthetica%202/add.png");
+}
+
+#searchButton {
+    -fx-graphic: url("http://www.veryicon.com/icon/24/System/Aesthetica%202/search.png");
+}
+
+#removeButton {
+    -fx-graphic: url("http://www.veryicon.com/icon/24/System/Aesthetica%202/remove.png");
+}
+
+#newButton {
+    -fx-graphic: url("http://www.veryicon.com/icon/24/System/Aesthetica%202/add.png");
+}
+
+#saveButton {
+    -fx-graphic: url("http://www.veryicon.com/icon/24/System/Aesthetica%202/accept.png");
+}
+
+.combo-box-base {
+    -fx-background-color: rgb(225, 228, 203);
+    -fx-border-color: #8d8d8d;
+    -fx-border-radius: 3px;
+}
+
