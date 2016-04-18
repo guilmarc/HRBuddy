@@ -14,9 +14,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Callback;
 
 import java.net.URL;
 import java.util.List;
@@ -152,11 +154,50 @@ public class CandidateController implements Initializable, ControlledScreen{
     /**
      * Initialize tables and assign cell factory
      */
+
+    Callback<TableColumn, TableCell> cellFactory =
+            new Callback<TableColumn, TableCell>() {
+                public TableCell call(TableColumn p) {
+                    return new EditingCell();
+                }
+            };
+
     public void initTables(){
         experiencesFunctionColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("JobFunction"));
+        experiencesFunctionColumn.setCellFactory(TextFieldTableCell.<Experience>forTableColumn());
+        experiencesFunctionColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Experience, String> t) -> {
+                    Experience thisExperience = ((Experience) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    thisExperience.setJobFunction(t.getNewValue());
+                    thisExperience.save();
+                });
+
         experiencesStartDateColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("StartDate"));
+        experiencesStartDateColumn.setCellFactory(TextFieldTableCell.<Experience>forTableColumn());
+        experiencesStartDateColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Experience, String> t) -> {
+                    Experience thisExperience = ((Experience) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    thisExperience.setStartDate(t.getNewValue());
+                    thisExperience.save();
+                });
+
         experiencesEndDateColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("EndDate"));
+        experiencesEndDateColumn.setCellFactory(TextFieldTableCell.<Experience>forTableColumn());
+        experiencesEndDateColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Experience, String> t) -> {
+                    Experience thisExperience = ((Experience) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    thisExperience.setEndDate(t.getNewValue());
+                    thisExperience.save();
+                });
+
         experiencesOrganisationColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("Organisation"));
+        experiencesOrganisationColumn.setCellFactory(TextFieldTableCell.<Experience>forTableColumn());
+        experiencesOrganisationColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Experience, String> t) -> {
+                    Experience thisExperience = ((Experience) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    thisExperience.setOrganisation(t.getNewValue());
+                    thisExperience.save();
+                });
     }
 
     /**
@@ -312,6 +353,6 @@ public class CandidateController implements Initializable, ControlledScreen{
         Experience newExperience = new Experience(this.candidate_id, "nouveau", "nouveau", "nouveau", "nouveau");
         newExperience.save();
         experiences.add(newExperience);
-        
+
     }
 }
