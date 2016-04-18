@@ -43,6 +43,7 @@ public class Candidate{
         this.cell_phone = cell_phone;
         this.experiences = null;
         this.stored = false;
+
     }
     public Candidate(){
         this.firstname = "";

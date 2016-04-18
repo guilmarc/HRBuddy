@@ -1,5 +1,8 @@
 package hrbuddy.Controllers;
 
+import hrbuddy.Database.Database;
+import hrbuddy.Database.QueryBuilder.Predicates.Predicate;
+import hrbuddy.Database.QueryBuilder.Query.DeleteQuery;
 import hrbuddy.Models.Candidate;
 import hrbuddy.Models.Experience;
 import hrbuddy.Utils.Logger;
@@ -11,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
@@ -21,6 +26,12 @@ import java.util.ResourceBundle;
  * Created by nboisvert on 2016-04-12.
  */
 public class CandidateController implements Initializable, ControlledScreen{
+    @FXML
+    private Button addExperienceButton;
+
+    @FXML
+    private Button removeExperienceButton;
+
     @FXML
     private ComboBox genderComboBox;
 
@@ -46,7 +57,7 @@ public class CandidateController implements Initializable, ControlledScreen{
     private TextField idTextField;
 
     @FXML
-    private TableView experiencesTableView;
+    private TableView<Experience> experiencesTableView;
 
     @FXML
     private TableColumn<Experience,String> experiencesFunctionColumn;
@@ -59,6 +70,7 @@ public class CandidateController implements Initializable, ControlledScreen{
 
     @FXML
     private TableColumn<Experience,String> experiencesOrganisationColumn;
+
     @FXML
     private Button newButton;
 
@@ -127,6 +139,14 @@ public class CandidateController implements Initializable, ControlledScreen{
         addressTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             this.onInputValueChanged(null);
         });
+
+    }
+
+
+    public void handleExperiencesTableViewClick(MouseEvent mouseEvent) {
+        if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+            this.removeExperienceButton.setDisable((this.experiencesTableView.getSelectionModel().isEmpty()));
+        }
     }
 
     /**
@@ -251,6 +271,15 @@ public class CandidateController implements Initializable, ControlledScreen{
         eventTriggered();
     }
 
+    public void removeExperience(){
+        if(!this.experiencesTableView.getSelectionModel().isEmpty()) {
+            int id = Integer.parseInt(this.experiencesTableView.getSelectionModel().getSelectedItem().getId());
+            Database.getInstance().execute(new DeleteQuery(Experience.getTable(), new Predicate("id", String.valueOf(id))));
+            this.experiences.remove(this.experiencesTableView.getSelectionModel().getFocusedIndex());
+            this.experiencesTableView.refresh();
+        }
+    }
+
     /**
      * When form is modified, change the ui if needed
      */
@@ -267,5 +296,10 @@ public class CandidateController implements Initializable, ControlledScreen{
     public void onInputValueChanged(Event event) {
         this.editionMode = true;
         eventTriggered();
+    }
+
+    public void onExperienceDeleteClick(ActionEvent actionEvent) {
+        this.removeExperience();
+        this.removeExperienceButton.setDisable((this.experiencesTableView.getSelectionModel().isEmpty()));
     }
 }

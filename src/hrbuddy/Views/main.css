@@ -5,7 +5,7 @@
 -fx-background: rgb(225, 228, 203);
 }
 
-#addButton {
+.addButton {
     -fx-graphic: url("http://www.veryicon.com/icon/24/System/Aesthetica%202/add.png");
 }
 
@@ -13,7 +13,7 @@
     -fx-graphic: url("http://www.veryicon.com/icon/24/System/Aesthetica%202/search.png");
 }
 
-#removeButton {
+.removeButton {
     -fx-graphic: url("http://www.veryicon.com/icon/24/System/Aesthetica%202/remove.png");
 }
 

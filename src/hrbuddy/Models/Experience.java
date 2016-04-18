@@ -93,6 +93,8 @@ public class Experience {
         this.organisation = organisation;
     }
 
+    public String getId(){ return this.id; }
+
     public Queryable getQuery(){
         Queryable query;
         if(this.stored){
@@ -251,4 +253,6 @@ public class Experience {
                 ");";
         return new Migration("Experience",table, Experience.migration_file);
     }
+
+    public static String getTable(){ return Experience.table; }
 }

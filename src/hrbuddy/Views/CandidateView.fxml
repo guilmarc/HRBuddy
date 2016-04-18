@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane fx:id="container" prefHeight="561.0" prefWidth="769.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hrbuddy.Controllers.CandidateController">
+<AnchorPane fx:id="container" prefHeight="652.0" prefWidth="898.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hrbuddy.Controllers.CandidateController">
    <children>
       <HBox layoutY="39.0" prefHeight="251.0" prefWidth="769.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0">
          <children>
@@ -64,13 +64,13 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
       </HBox>
-      <TabPane layoutY="304.0" prefHeight="257.0" prefWidth="769.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="220.0">
+      <TabPane layoutY="275.0" prefHeight="347.0" prefWidth="769.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="220.0">
         <tabs>
           <Tab text="Expériences">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="experiencesTableView" editable="true" prefHeight="228.0" prefWidth="769.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TableView fx:id="experiencesTableView" editable="true" onMouseClicked="#handleExperiencesTableViewClick" prefHeight="209.0" prefWidth="769.0" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
                             <TableColumn fx:id="experiencesFunctionColumn" prefWidth="283.0" text="Fonctions" />
                             <TableColumn fx:id="experiencesStartDateColumn" minWidth="0.0" prefWidth="87.0" text="Date début" />
@@ -78,6 +78,12 @@
                               <TableColumn fx:id="experiencesOrganisationColumn" prefWidth="316.0" text="Organisation" />
                           </columns>
                         </TableView>
+                        <ToolBar layoutY="209.0" prefHeight="46.0" prefWidth="769.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                          <items>
+                            <Button fx:id="addExperienceButton" mnemonicParsing="false" styleClass="addButton" text="Ajouter" />
+                              <Button fx:id="removeExperienceButton" disable="true" mnemonicParsing="false" onAction="#onExperienceDeleteClick" styleClass="removeButton" text="Supprimer" />
+                          </items>
+                        </ToolBar>
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -134,14 +140,5 @@
             <Button fx:id="searchButton" mnemonicParsing="false" text="Rechercher" />
         </items>
       </ToolBar>
-      <HBox prefHeight="30.0" prefWidth="200.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-         <children>
-            <Button id="addButton" mnemonicParsing="false" text="Ajouter" />
-            <Button fx:id="removeButton" mnemonicParsing="false" text="Supprimer" />
-         </children>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-      </HBox>
    </children>
 </AnchorPane>
