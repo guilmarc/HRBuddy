@@ -29,4 +29,9 @@ public class InsertQuery implements Queryable {
         }
         return query+" ("+Utils.implode(",",fields)+") VALUES ("+Utils.implode(",",value)+");";
     }
+
+    @Override
+    public boolean asResultSet() {
+        return false;
+    }
 }

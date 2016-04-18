@@ -10,4 +10,5 @@ import java.util.Map;
  */
 public interface Queryable {
     public String getQuery() throws QueryWithoutPredicateException;
+    public boolean asResultSet();
 }

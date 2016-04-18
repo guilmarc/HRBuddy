@@ -15,10 +15,10 @@ public class RawPredicate implements Predicable {
     }
 
     @Override
-    public String getPredicateString() {return " WHERE "+this.toString();}
+    public String getPredicateString() {return ((this.hasPredicate()) ? " WHERE "+this.toString() : "");}
 
     @Override
     public boolean hasPredicate() {
-        return !this.raw.equals("");
+        return (!this.raw.equals("") && this.raw.length() > 1);
     }
 }

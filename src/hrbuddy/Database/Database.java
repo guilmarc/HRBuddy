@@ -1,6 +1,8 @@
 package hrbuddy.Database;
 
 import hrbuddy.Controllers.DialogController;
+import hrbuddy.Database.Drivers.*;
+import hrbuddy.Database.Drivers.Driver;
 import hrbuddy.Database.QueryBuilder.Predicates.FieldSet;
 import hrbuddy.Database.QueryBuilder.Predicates.Predicable;
 import hrbuddy.Database.QueryBuilder.Predicates.Predicate;
@@ -20,27 +22,29 @@ import java.util.*;
  * Created by nboisvert on 16-04-11.
  */
 public class Database {
+    /**
+     * Instance of the singleton
+     */
     private static Database ourInstance = new Database();
+
+    /**
+     * Getter for the Database singleton instance
+     *
+     * @return Database, the instance of the database
+     */
     public static Database getInstance() {
         return ourInstance;
     }
 
-    private String connection_driver = "jdbc:sqlite";
-    private String database_file = "HRBuddy.db";
-    private int last_inserted_id = -1;
+    //  Connection driver
+    private Driver driver = new SqliteDriver("HRBuddy.db");
 
-    public String getConnectionString(){
-        return this.connection_driver+":"+this.database_file;
-    }
-
-    public int getLastInsertedId(){
-        return this.last_inserted_id;
-    }
-
-    public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(this.getConnectionString());
-    }
-
+    /**
+     * Execute query that provide column
+     *
+     * @param query, String representing a SELECT * query. It is suggested to add LIMIT 1 to optimize speed
+     * @return List of columns as string
+     */
     private List<String> execSelectColumns(String query){
         List<String> datas = new ArrayList<>();
         try {
@@ -56,7 +60,13 @@ public class Database {
         return datas;
     }
 
-    private List<HashMap<String,String>> execSelect(Queryable query){
+    /**
+     * Execute a given Select Query, see QueryBuilder for documentation about building it
+     *
+     * @param query, SelectQuery object
+     * @return List of Hashmap of String combo, rows fetched by the query. The key of the hashmap matches the column name
+     */
+    private List<HashMap<String,String>> execSelect(SelectQuery query){
         List<HashMap<String,String>> datas = new ArrayList<>();
         try {
             Connection connection = this.getConnection();
@@ -66,15 +76,18 @@ public class Database {
             connection.close();
         }
         catch (Exception e){
-            try {
-                Logger.warning(query.getQuery().toString());
-            } catch (QueryWithoutPredicateException e1) {
-                e1.printStackTrace();
-            }
             Logger.except(e.getMessage());
         }
         return datas;
     }
+
+    /**
+     * Extract columns from a given ResultSet
+     *
+     * @param rs, ResulSet from a connection
+     * @return  List of string matching the ResultSets columns
+     * @throws SQLException
+     */
     private List<String> extractResultSetColumns(ResultSet rs) throws SQLException {
         ResultSetMetaData md = rs.getMetaData();
         int columns = md.getColumnCount();
@@ -85,6 +98,14 @@ public class Database {
 
         return list;
     }
+
+    /**
+     * Extract rows from a given ResultSet
+     *
+     * @param rs, ResultSet from a Connection
+     * @return List of Hashmap of String combo, rows fetched by the query. The key of the hashmap matches the column name
+     * @throws SQLException
+     */
     private List<HashMap<String,String>> extractResultSet(ResultSet rs) throws SQLException {
         ResultSetMetaData md = rs.getMetaData();
         int columns = md.getColumnCount();
@@ -99,6 +120,15 @@ public class Database {
 
         return list;
     }
+
+    /**
+     * Execute a raw query given by a string
+     *
+     * NOTE : This method should be deleted and every call to it should be refactored to match a Queryable object
+     *
+     * @param query, String representing the Query
+     * @return List of Integer, for modified/inserted keys. Does not return datas
+     */
     private List<Integer> execUpdate(String query){
         List<Integer> keys = new ArrayList<>();
         try {
@@ -118,6 +148,13 @@ public class Database {
         }
         return keys;
     }
+
+    /**
+     * Execute a query as an update/insert in the database
+     *
+     * @param query, Queryable object
+     * @return List of Integer, for modified/inserted keys. Does not return datas
+     */
     private List<Integer> execUpdate(Queryable query){
         List<Integer> keys = new ArrayList<>();
         try {
@@ -138,66 +175,39 @@ public class Database {
         return keys;
     }
 
-    public List<String> selectColumns(String table){
-        String query = "SELECT * FROM "+table+" LIMIT 1";
-        return this.execSelectColumns(query);
-    }
-    public List<HashMap<String,String>> select(String table){
-        return this.execSelect(new SelectQuery(table));
-    }
-    public List<HashMap<String,String>> selectId(String table, int id, String key){
-        return this.execSelect(new SelectQuery(table,new Predicate(key,String.valueOf(id))));
-    }
-    public List<HashMap<String,String>> selectId(String table, int id){
-        return this.execSelect(new SelectQuery(table,new Predicate("id",String.valueOf(id))));
-    }
-    public List<HashMap<String,String>> selectSearch(String table, Predicable predicates, FieldSet fields){
-        return this.execSelect(new SelectQuery(table,predicates,fields));
-    }
-    public List<HashMap<String,String>> selectSearch(String table, Predicable predicates){
-        return this.execSelect(new SelectQuery(table,predicates));
-    }
-    public List<HashMap<String,String>> rawSelect(Queryable query){
-        return this.execSelect(query);
-    }
+    /**
+     * Launch query execution
+     *
+     * @param query, Queryable object
+     * @return List of Integer, for modified/inserted keys. Does not return datas
+     */
     public List<Integer> execute(Queryable query) {
         return this.execUpdate(query);
     }
 
-    public String likeQuery(String criteria, String...fields){
-        String output = " WHERE ";
-        criteria = criteria.replace("\'","\'\'");
-        criteria = "'%"+criteria+"%'";
-        for (int i = 0; i < fields.length; i++){
-            output += fields[i]+" LIKE "+criteria;
-            if(i < (fields.length-1)){
-                output += " OR ";
-            }
-        }
-        return output;
+    /**
+     * Select ResultSets columns
+     *
+     * @param table, given table for columns
+     * @return List of String matching columns
+     */
+    public List<String> selectColumns(String table){
+        String query = "SELECT * FROM "+table+" LIMIT 1";
+        return this.execSelectColumns(query);
+    }
+    public List<HashMap<String,String>> select(SelectQuery query){
+        return this.execSelect(query);
     }
 
-    public String likeQuery(String criteria, List<String> fields){
-        String output = " WHERE ";
-        criteria = criteria.replace("\'","\'\'");
-        criteria = "'%"+criteria+"%'";
-        for (int i = 0; i < fields.size(); i++){
-            output += fields.get(i)+" LIKE "+criteria;
-            if(i < (fields.size()-1)){
-                output += " OR ";
-            }
-        }
-        return output;
+    public String getConnectionString(){
+        return this.getDriver().getConnectionString();
     }
-
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(this.getConnectionString());
+    }
     public boolean databaseExists(){
-        File file = new File (this.database_file);
-        if(!file.exists()){
-            return false;
-        }
-        return true;
+        return this.getDriver().databaseExists();
     }
-
     public void migrate(Migration...migration){
         for(int i = 0; i < migration.length; i++) {
             this.execUpdate(migration[i].getTableCreation());
@@ -208,10 +218,9 @@ public class Database {
             Logger.migrate(migration[i].getName() + " " + migration[i].getInsertRows().size() + " rows");
         }
     }
-
     private Database() {
         try {
-            Class.forName("org.sqlite.JDBC");
+            Class.forName(this.getDriver().getDriverClass());
             if(!this.databaseExists()){
                 Alert alert = DialogController.noButton("Appuyez sur OK pour migrer la base de données");
                 Logger.warning("Database doesn't exists");
@@ -220,14 +229,13 @@ public class Database {
 
                 alert.close();
             }
-            //Class.forName("org.sqlite.JDBC");
         } catch (Exception e) {
             Logger.except(e.getMessage());
         }
     }
-
     public boolean getStatus() {
         return this.databaseExists();
     }
-
+    public Driver getDriver(){ return this.driver; }
+    public void setDriver(Driver driver){ this.driver = driver; }
 }

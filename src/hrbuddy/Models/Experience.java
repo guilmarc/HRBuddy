@@ -7,6 +7,7 @@ import hrbuddy.Database.QueryBuilder.Predicates.PredicateList;
 import hrbuddy.Database.QueryBuilder.Predicates.SearchPredicate;
 import hrbuddy.Database.QueryBuilder.Query.InsertQuery;
 import hrbuddy.Database.QueryBuilder.Query.Queryable;
+import hrbuddy.Database.QueryBuilder.Query.SelectQuery;
 import hrbuddy.Database.QueryBuilder.Query.UpdateQuery;
 import hrbuddy.Utils.Logger;
 import hrbuddy.Database.Migrations.Migration;
@@ -58,6 +59,38 @@ public class Experience {
         this.end_date = (list.containsKey("end_date") ? list.get("end_date") : "");
         this.organisation = (list.containsKey("organisation") ? list.get("organisation") : "");
         this.stored = true;
+    }
+
+    public String getJobFunction() {
+        return job_function;
+    }
+
+    public void setJobFunction(String job_function) {
+        this.job_function = job_function;
+    }
+
+    public String getStartDate() {
+        return start_date;
+    }
+
+    public void setStartDate(String start_date) {
+        this.start_date = start_date;
+    }
+
+    public String getEndDate() {
+        return end_date;
+    }
+
+    public void setEndDate(String end_date) {
+        this.end_date = end_date;
+    }
+
+    public String getOrganisation() {
+        return organisation;
+    }
+
+    public void setOrganisation(String organisation) {
+        this.organisation = organisation;
     }
 
     public Queryable getQuery(){
@@ -113,7 +146,7 @@ public class Experience {
      * @return List of all the Experience
      */
     public static List<Experience> all(){
-        List<HashMap<String,String>> list = Database.getInstance().select(Experience.table);
+        List<HashMap<String,String>> list = Database.getInstance().select(new SelectQuery(Experience.table));
         List<Experience> Experience = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){
             Experience.add(new Experience(list.get(i)));
@@ -127,7 +160,7 @@ public class Experience {
      * @return List of the matched Experience
      */
     public static List<Experience> search(String criteria){
-        List<HashMap<String,String>> list = Database.getInstance().selectSearch(Experience.table,new SearchPredicate(criteria, Experience.search_fields), new FieldSet());
+        List<HashMap<String,String>> list = Database.getInstance().select(new SelectQuery(Experience.table,new SearchPredicate(criteria, Experience.search_fields), new FieldSet()));
         List<Experience> Experience = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){
             Experience.add(new Experience(list.get(i)));
@@ -135,8 +168,8 @@ public class Experience {
         return Experience;
     }
 
-    public static List<Experience> raw(Queryable query){
-        List<HashMap<String,String>> list = Database.getInstance().rawSelect(query);
+    public static List<Experience> raw(SelectQuery query){
+        List<HashMap<String,String>> list = Database.getInstance().select(query);
         List<Experience> Experience = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){
             Experience.add(new Experience(list.get(i)));
@@ -152,7 +185,7 @@ public class Experience {
      * @return List of the matched Experience
      */
     public static List<Experience> search(String criteria, List<String> search_fields){
-        List<HashMap<String,String>> list = Database.getInstance().selectSearch(Experience.table,new SearchPredicate(criteria, Experience.search_fields), new FieldSet(search_fields));
+        List<HashMap<String,String>> list = Database.getInstance().select(new SelectQuery(Experience.table,new SearchPredicate(criteria, Experience.search_fields), new FieldSet(search_fields)));
         List<Experience> Experience = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){
             Experience.add(new Experience(list.get(i)));
@@ -162,7 +195,7 @@ public class Experience {
     }
 
     public static List<Experience> related(String key, int id){
-        List<HashMap<String,String>> list = Database.getInstance().selectId(Experience.table,id,key);
+        List<HashMap<String,String>> list = Database.getInstance().select(new SelectQuery(Experience.table,new Predicate(key,String.valueOf(id))));
         List<Experience> Experience = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){
             Experience.add(new Experience(list.get(i)));
@@ -178,7 +211,7 @@ public class Experience {
      * @return List of the matched Experience
      */
     public static List<Experience> search(String criteria, String...search_fields){
-        List<HashMap<String,String>> list = Database.getInstance().selectSearch(Experience.table,new SearchPredicate(criteria, Experience.search_fields), new FieldSet(search_fields));
+        List<HashMap<String,String>> list = Database.getInstance().select(new SelectQuery(Experience.table,new SearchPredicate(criteria, Experience.search_fields), new FieldSet(search_fields)));
         List<Experience> Experience = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){
             Experience.add(new Experience(list.get(i)));
@@ -193,7 +226,7 @@ public class Experience {
      * @return Experience instance
      */
     public static Experience find(int id){
-        List<HashMap<String,String>> list = Database.getInstance().selectId(Experience.table, id);
+        List<HashMap<String,String>> list = Database.getInstance().select(new SelectQuery(Candidate.table,new Predicate("id", String.valueOf(id))));
         if(list.size() > 0){
             return new Experience(list.get(0));
         }

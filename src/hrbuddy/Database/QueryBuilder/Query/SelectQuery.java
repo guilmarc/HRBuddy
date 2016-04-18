@@ -43,6 +43,11 @@ public class SelectQuery implements Queryable {
         return output;
     }
 
+    @Override
+    public boolean asResultSet() {
+        return true;
+    }
+
     //      GETTERS
     public FieldSet getFields() {
         return fields;

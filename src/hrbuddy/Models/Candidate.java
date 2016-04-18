@@ -1,5 +1,6 @@
 package hrbuddy.Models;
 
+import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import hrbuddy.Database.Database;
 import hrbuddy.Database.QueryBuilder.Predicates.FieldSet;
 import hrbuddy.Database.QueryBuilder.Predicates.Predicate;
@@ -120,10 +121,10 @@ public class Candidate{
         if(this.stored){
             PredicateList list = new PredicateList();
             list.getPredicates().add(new Predicate("id",String.valueOf(this.id)));
-            query = new UpdateQuery(Candidate.table,this.getMap(), list);
+            query = new UpdateQuery(Candidate.getTable(),this.getMap(), list);
         }
         else{
-            query = new InsertQuery(Candidate.table,this.getMap());
+            query = new InsertQuery(Candidate.getTable(),this.getMap());
         }
         return query;
     }
@@ -171,36 +172,13 @@ public class Candidate{
      * @return List of all the Candidates
      */
     public static List<Candidate> all(){
-        List<HashMap<String,String>> list = Database.getInstance().select(Candidate.table);
+        SelectQuery query = new SelectQuery(Candidate.getTable());
+        List<HashMap<String,String>> list = Database.getInstance().select(query);
         List<Candidate> candidates = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){
             candidates.add(new Candidate(list.get(i)));
         }
         return candidates;
-    }
-    /**
-     * Return every instances of the table where at least one field from the static "search_fields" matched
-     *
-     * @param criteria, String of the search criteria
-     * @return List of the matched candidates
-     */
-    public static List<Candidate> search(String criteria){
-        List<HashMap<String,String>> list = Database.getInstance().selectSearch(Candidate.table, new SearchPredicate(criteria,Candidate.search_fields), new FieldSet());
-        List<Candidate> candidates = new ArrayList<>();
-        for(int i = 0; i < list.size(); i++){
-            candidates.add(new Candidate(list.get(i)));
-        }
-        return candidates;
-    }
-
-    public static List<Candidate> raw(Queryable query){
-        List<HashMap<String,String>> list = Database.getInstance().rawSelect(query);
-        List<Candidate> candidates = new ArrayList<>();
-        for(int i = 0; i < list.size(); i++){
-            candidates.add(new Candidate(list.get(i)));
-        }
-        return candidates;
-
     }
     /**
      * Return every instances of the table where at least one field from "search_fields" matched
@@ -210,23 +188,8 @@ public class Candidate{
      * @return List of the matched candidates
      */
     public static List<Candidate> search(String criteria, List<String> search_fields){
-        List<HashMap<String,String>> list = Database.getInstance().selectSearch(Candidate.table, new SearchPredicate(criteria,Candidate.search_fields));
-        List<Candidate> candidates = new ArrayList<>();
-        for(int i = 0; i < list.size(); i++){
-            candidates.add(new Candidate(list.get(i)));
-        }
-        return candidates;
-
-    }
-    /**
-     * Return every instances of the table where at least one field from "search_fields" matched
-     *
-     * @param criteria, String of the search criteria
-     * @param search_fields, String or list of string with all the field to search within
-     * @return List of the matched candidates
-     */
-    public static List<Candidate> search(String criteria, String...search_fields){
-        List<HashMap<String,String>> list = Database.getInstance().selectSearch(Candidate.table, new SearchPredicate(criteria,Candidate.search_fields));
+        SelectQuery query = new SelectQuery(Candidate.getTable(), new SearchPredicate(criteria,Candidate.search_fields));
+        List<HashMap<String,String>> list = Database.getInstance().select(query);
         List<Candidate> candidates = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){
             candidates.add(new Candidate(list.get(i)));
@@ -241,7 +204,8 @@ public class Candidate{
      * @return Candidate instance
      */
     public static Candidate find(int id){
-        List<HashMap<String,String>> list = Database.getInstance().selectId(Candidate.table, id);
+        SelectQuery query = new SelectQuery(Candidate.getTable(), new Predicate("id",String.valueOf(id)));
+        List<HashMap<String,String>> list = Database.getInstance().select(query);
         if(list.size() > 0){
             return new Candidate(list.get(0));
         }

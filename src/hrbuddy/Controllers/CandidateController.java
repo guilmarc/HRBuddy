@@ -49,16 +49,16 @@ public class CandidateController implements Initializable, ControlledScreen{
     private TableView experiencesTableView;
 
     @FXML
-    private TableColumn experiencesFunctionColumn;
+    private TableColumn<Experience,String> experiencesFunctionColumn;
 
     @FXML
-    private TableColumn experiencesStartDateColumn;
+    private TableColumn<Experience,String> experiencesStartDateColumn;
 
     @FXML
-    private TableColumn experiencesEndDateColumn;
+    private TableColumn<Experience,String> experiencesEndDateColumn;
 
     @FXML
-    private TableColumn experiencesOrganisationColumn;
+    private TableColumn<Experience,String> experiencesOrganisationColumn;
     @FXML
     private Button newButton;
 
@@ -133,10 +133,10 @@ public class CandidateController implements Initializable, ControlledScreen{
      * Initialize tables and assign cell factory
      */
     public void initTables(){
-        experiencesFunctionColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("job_function"));
-        experiencesStartDateColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("start_date"));
-        experiencesEndDateColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("end_date"));
-        experiencesOrganisationColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("organisation"));
+        experiencesFunctionColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("JobFunction"));
+        experiencesStartDateColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("StartDate"));
+        experiencesEndDateColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("EndDate"));
+        experiencesOrganisationColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("Organisation"));
     }
 
     /**

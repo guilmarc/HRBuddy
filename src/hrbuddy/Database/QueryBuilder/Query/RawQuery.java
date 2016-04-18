@@ -14,4 +14,9 @@ public class RawQuery implements Queryable {
     public String getQuery() {
         return this.query;
     }
+
+    @Override
+    public boolean asResultSet() {
+        return true;
+    }
 }

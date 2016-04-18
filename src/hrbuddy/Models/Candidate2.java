@@ -1,6 +1,8 @@
 package hrbuddy.Models;
 
 import hrbuddy.Database.Database;
+import hrbuddy.Database.QueryBuilder.Predicates.Predicate;
+import hrbuddy.Database.QueryBuilder.Query.SelectQuery;
 import hrbuddy.Utils.Logger;
 
 import java.util.HashMap;
@@ -27,7 +29,7 @@ public class Candidate2 extends Model{
      * @return Candidate instance
      */
     public static Candidate2 find(int id){
-        List<HashMap<String,String>> list = Database.getInstance().selectId(Candidate2.table, id);
+        List<HashMap<String,String>> list = Database.getInstance().select(new SelectQuery(Candidate2.table, new Predicate("id", String.valueOf(id))));
         if(list.size() > 0){
             return new Candidate2(list.get(0));
         }

@@ -36,6 +36,11 @@ public class UpdateQuery implements Queryable {
         return output+Utils.implode(", ",fields)+this.getPredicates().getPredicateString();
     }
 
+    @Override
+    public boolean asResultSet() {
+        return false;
+    }
+
     //      GETTERS
     public String getTable() {
         return table;

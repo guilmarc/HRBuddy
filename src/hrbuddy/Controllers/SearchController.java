@@ -20,6 +20,9 @@ import java.util.ResourceBundle;
 
 public class SearchController implements Initializable, ControlledScreen {
     @FXML
+    private Button newButton;
+
+    @FXML
     private TableColumn idColumn;
 
     @FXML
@@ -141,5 +144,9 @@ public class SearchController implements Initializable, ControlledScreen {
         }
         candidates = FXCollections.observableArrayList(Candidate.search(this.searchTextField.getText(),fields));
         resultTableView.setItems(candidates);
+    }
+
+    public void promptNewCandidateView(ActionEvent actionEvent) {
+        this.parent.loadCandidateTab(-1);
     }
 }
