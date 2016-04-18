@@ -110,6 +110,7 @@ public class Experience {
 
     private Map<String,String> getMap(){
         Map<String,String> values = new HashMap<String, String>();
+        values.put("candidate_id", this.candidate_id);
         values.put("job_function",this.job_function);
         values.put("start_date",this.start_date);
         values.put("end_date",this.end_date);

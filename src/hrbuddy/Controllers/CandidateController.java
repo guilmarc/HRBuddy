@@ -213,9 +213,13 @@ public class CandidateController implements Initializable, ControlledScreen{
             this.mobilephoneTextField.setText(this.candidate.getCellPhone());
             this.idTextField.setText(this.candidate.getId());
             List<Experience> exp_list = this.candidate.getExperiences(true);
+
+            experiences = FXCollections.observableArrayList(exp_list);
+            experiencesTableView.setItems(experiences);
+
             if(exp_list.size() > 0){
-                experiences = FXCollections.observableArrayList(exp_list);
-                experiencesTableView.setItems(experiences);
+
+
             }
         }
         else{
@@ -301,5 +305,13 @@ public class CandidateController implements Initializable, ControlledScreen{
     public void onExperienceDeleteClick(ActionEvent actionEvent) {
         this.removeExperience();
         this.removeExperienceButton.setDisable((this.experiencesTableView.getSelectionModel().isEmpty()));
+    }
+
+    public void handleAddExperienceButtonAction(ActionEvent actionEvent) {
+
+        Experience newExperience = new Experience(this.candidate_id, "nouveau", "nouveau", "nouveau", "nouveau");
+        newExperience.save();
+        experiences.add(newExperience);
+        
     }
 }
