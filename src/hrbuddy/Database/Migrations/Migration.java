@@ -2,6 +2,7 @@ package hrbuddy.Database.Migrations;
 
 import hrbuddy.Models.Candidate;
 import hrbuddy.Models.Experience;
+import hrbuddy.Models.Postulation;
 import hrbuddy.Utils.Logger;
 
 import java.io.File;
@@ -75,9 +76,10 @@ public class Migration {
     }
 
     public static Migration[] getAllMigrations(){
-        Migration[] migrations = new Migration[2];
+        Migration[] migrations = new Migration[3];
         migrations[0] = Candidate.getMigration();
         migrations[1] = Experience.getMigration();
+        migrations[2] = Postulation.getMigration();
         return migrations;
     }
 }
