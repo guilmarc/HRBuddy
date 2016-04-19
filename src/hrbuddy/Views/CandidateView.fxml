@@ -41,8 +41,8 @@
                   <Label text="Prénom" GridPane.rowIndex="2" />
                   <Label text="Nom" GridPane.rowIndex="3" />
                   <Label text="Adresse" GridPane.columnIndex="2" />
-                  <Label text="Tél. domicile" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label text="Tél. mobile" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Label text="Téléphone" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label text="Cellulaire" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                   <Label text="Courriel" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                   <TextField fx:id="firstnameTextField" onAction="#onInputValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="lastnameTextField" onAction="#onInputValueChanged" GridPane.columnIndex="1" GridPane.rowIndex="3" />
@@ -91,17 +91,16 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TableView fx:id="formationsTableView" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
-                            <TableColumn prefWidth="93.0" text="Niveau" />
-                            <TableColumn prefWidth="314.0" text="Diplôme" />
-                              <TableColumn minWidth="0.0" prefWidth="101.0" text="Date" />
+                            <TableColumn fx:id="formationsDiplomaColumn" prefWidth="358.0" text="Diplôme" />
+                              <TableColumn fx:id="formationsDateColumn" minWidth="0.0" prefWidth="109.0" text="Date" />
                           </columns>
                         </TableView>
                         <ToolBar layoutX="10.0" layoutY="219.0" prefHeight="46.0" prefWidth="769.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <items>
-                              <Button fx:id="addExperienceButton1" mnemonicParsing="false" styleClass="addButton" text="Ajouter" />
-                              <Button fx:id="removeExperienceButton1" disable="true" mnemonicParsing="false" onAction="#onExperienceDeleteClick" styleClass="removeButton" text="Supprimer" />
+                              <Button fx:id="addFormationButton" mnemonicParsing="false" onAction="#handleAddFormationButtonAction" styleClass="addButton" text="Ajouter" />
+                              <Button fx:id="removeFormationButton" disable="true" mnemonicParsing="false" onAction="#handleRemoveFormationButtonAction" styleClass="removeButton" text="Supprimer" />
                            </items>
                         </ToolBar>
                      </children></AnchorPane>
@@ -121,8 +120,8 @@
                         </TableView>
                         <ToolBar layoutX="10.0" layoutY="219.0" prefHeight="46.0" prefWidth="769.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <items>
-                              <Button fx:id="addExperienceButton2" mnemonicParsing="false" styleClass="addButton" text="Ajouter" />
-                              <Button fx:id="removeExperienceButton2" disable="true" mnemonicParsing="false" onAction="#onExperienceDeleteClick" styleClass="removeButton" text="Supprimer" />
+                              <Button fx:id="addApplicationButton" mnemonicParsing="false" onAction="#handleAddApplicationButtonAction" styleClass="addButton" text="Ajouter" />
+                              <Button fx:id="removeApplicationButton" disable="true" mnemonicParsing="false" onAction="#handleRemoveApplicationButtonAction" styleClass="removeButton" text="Supprimer" />
                            </items>
                         </ToolBar>
                      </children>

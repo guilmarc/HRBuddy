@@ -1,0 +1,1 @@
+insert into formations (candidate_id, diploma, date_formation) values (1,"DEC Informatique de gestion","2005-12-02");

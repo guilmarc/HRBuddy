@@ -32,6 +32,7 @@ public class Candidate{
     protected String home_phone;
     protected String cell_phone;
     protected List<Experience> experiences;
+    protected List<Formation> formations;
     protected boolean stored = false;
 
     public Candidate(String firstname,String lastname,String address,String email,String home_phone,String cell_phone){
@@ -165,6 +166,16 @@ public class Candidate{
             this.experiences = new ArrayList<>();
         }
         return this.experiences;
+    }
+
+    public List<Formation> getFormations(boolean refresh){
+        if((this.formations == null || refresh) && this.stored == true){
+            this.formations = Formation.related("candidate_id",Integer.parseInt(this.id));
+        }
+        else if(!this.stored || this.formations == null){
+            this.formations = new ArrayList<>();
+        }
+        return this.formations;
     }
 
     /**

@@ -5,6 +5,7 @@ import hrbuddy.Database.QueryBuilder.Predicates.Predicate;
 import hrbuddy.Database.QueryBuilder.Query.DeleteQuery;
 import hrbuddy.Models.Candidate;
 import hrbuddy.Models.Experience;
+import hrbuddy.Models.Formation;
 import hrbuddy.Utils.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,19 +30,22 @@ import java.util.ResourceBundle;
  */
 public class CandidateController implements Initializable, ControlledScreen{
     @FXML
-    private Button addExperienceButton;
+    private AnchorPane container;
 
     @FXML
-    private Button removeExperienceButton;
+    private TextField idTextField;
 
     @FXML
-    private ComboBox genderComboBox;
+    private ComboBox<String> genderComboBox;
 
     @FXML
     private TextField firstnameTextField;
 
     @FXML
     private TextField lastnameTextField;
+
+    @FXML
+    private TextField addressTextField;
 
     @FXML
     private TextField homephoneTextField;
@@ -53,25 +57,64 @@ public class CandidateController implements Initializable, ControlledScreen{
     private TextField emailTextField;
 
     @FXML
-    private TextField addressTextField;
-
-    @FXML
-    private TextField idTextField;
-
-    @FXML
     private TableView<Experience> experiencesTableView;
 
     @FXML
-    private TableColumn<Experience,String> experiencesFunctionColumn;
+    private TableColumn<Experience, String> experiencesFunctionColumn;
 
     @FXML
-    private TableColumn<Experience,String> experiencesStartDateColumn;
+    private TableColumn<Experience, String> experiencesStartDateColumn;
 
     @FXML
-    private TableColumn<Experience,String> experiencesEndDateColumn;
+    private TableColumn<Experience, String> experiencesEndDateColumn;
 
     @FXML
-    private TableColumn<Experience,String> experiencesOrganisationColumn;
+    private TableColumn<Experience, String> experiencesOrganisationColumn;
+
+    @FXML
+    private Button addExperienceButton;
+
+    @FXML
+    private Button removeExperienceButton;
+
+    @FXML
+    private TableView<Formation> formationsTableView;
+
+    @FXML
+    private TableColumn<Formation, String> formationsDiplomaColumn;
+
+    @FXML
+    private TableColumn<Formation, String> formationsDateColumn;
+
+    @FXML
+    private Button addFormationButton;
+
+    @FXML
+    private Button removeFormationButton;
+
+    @FXML
+    private TableView<Object> applicationsTableView;
+
+    @FXML
+    private TableColumn<Object, String> applicationsDateColumn;
+
+    @FXML
+    private TableColumn<Object, String> applicationsJobColumn;
+
+    @FXML
+    private TableColumn<Object, String> applicationsStatusColumn;
+
+    @FXML
+    private TableColumn<Object, String> applicationsRaisonColumn;
+
+    @FXML
+    private Button addApplicationButton;
+
+    @FXML
+    private Button removeApplicationButton;
+
+    //@FXML
+    //private TableColumn<?, ?> suggestionsJobColumn;
 
     @FXML
     private Button newButton;
@@ -81,9 +124,6 @@ public class CandidateController implements Initializable, ControlledScreen{
 
     @FXML
     private Button searchButton;
-
-    @FXML
-    private AnchorPane container;
 
     //  Id of the candidate to show
     protected String candidate_id = "-1";
@@ -99,6 +139,15 @@ public class CandidateController implements Initializable, ControlledScreen{
 
     //  List of the candidate's experiences
     private ObservableList<Experience> experiences;
+
+    //  List of the candidate's experiences
+    private ObservableList<Formation> formations;
+
+    //  List of the candidate's experiences
+    //private ObservableList<Application> applications;
+
+    //  List of the candidate's experiences
+    //private ObservableList<Suggestion> suggestions;
 
     /**
      * References the main parent of the view, the global container
@@ -162,6 +211,9 @@ public class CandidateController implements Initializable, ControlledScreen{
                 }
             };
 
+
+
+
     public void initTables(){
         experiencesFunctionColumn.setCellValueFactory(new PropertyValueFactory<Experience,String>("JobFunction"));
         experiencesFunctionColumn.setCellFactory(TextFieldTableCell.<Experience>forTableColumn());
@@ -197,6 +249,25 @@ public class CandidateController implements Initializable, ControlledScreen{
                     Experience thisExperience = ((Experience) t.getTableView().getItems().get(t.getTablePosition().getRow()));
                     thisExperience.setOrganisation(t.getNewValue());
                     thisExperience.save();
+                });
+
+
+        formationsDiplomaColumn.setCellValueFactory(new PropertyValueFactory<Formation,String>("Diploma"));
+        formationsDiplomaColumn.setCellFactory(TextFieldTableCell.<Formation>forTableColumn());
+        formationsDiplomaColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Formation, String> t) -> {
+                    Formation thisFormation = ((Formation) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    thisFormation.setDiploma(t.getNewValue());
+                    thisFormation.save();
+                });
+
+        formationsDateColumn.setCellValueFactory(new PropertyValueFactory<Formation,String>("DateFormation"));
+        formationsDateColumn.setCellFactory(TextFieldTableCell.<Formation>forTableColumn());
+        formationsDateColumn.setOnEditCommit(
+                (TableColumn.CellEditEvent<Formation, String> t) -> {
+                    Formation thisFormation = ((Formation) t.getTableView().getItems().get(t.getTablePosition().getRow()));
+                    thisFormation.setDateFormation(t.getNewValue());
+                    thisFormation.save();
                 });
     }
 
@@ -253,13 +324,17 @@ public class CandidateController implements Initializable, ControlledScreen{
             this.homephoneTextField.setText(this.candidate.getHomePhone());
             this.mobilephoneTextField.setText(this.candidate.getCellPhone());
             this.idTextField.setText(this.candidate.getId());
-            List<Experience> exp_list = this.candidate.getExperiences(true);
 
+            List<Experience> exp_list = this.candidate.getExperiences(true);
             experiences = FXCollections.observableArrayList(exp_list);
             experiencesTableView.setItems(experiences);
 
-            if(exp_list.size() > 0){
+            List<Formation> formation_list = this.candidate.getFormations(true);
+            formations = FXCollections.observableArrayList(formation_list);
+            formationsTableView.setItems(formations);
 
+            if(exp_list.size() > 0){
+                //Retiré du if car ça crée un null pointer sur l'ajout !
 
             }
         }
@@ -355,4 +430,49 @@ public class CandidateController implements Initializable, ControlledScreen{
         experiences.add(newExperience);
 
     }
+
+    public void handleAddFormationButtonAction(ActionEvent actionEvent) {
+
+        Formation newFormation = new Formation(this.candidate_id, "nouveau", "nouveau");
+        newFormation.save();
+        formations.add(newFormation);
+
+    }
+
+    public void handleRemoveFormationButtonAction(ActionEvent actionEvent) {
+
+        //if(!this.experiencesTableView.getSelectionModel().isEmpty()) {
+        //    int id = Integer.parseInt(this.experiencesTableView.getSelectionModel().getSelectedItem().getId());
+        //    Database.getInstance().execute(new DeleteQuery(Experience.getTable(), new Predicate("id", String.valueOf(id))));
+        //    this.experiences.remove(this.experiencesTableView.getSelectionModel().getFocusedIndex());
+        //    this.experiencesTableView.refresh();
+        //}
+        //this.removeExperienceButton.setDisable((this.experiencesTableView.getSelectionModel().isEmpty()));
+    }
+
+    public void handleAddApplicationButtonAction(ActionEvent actionEvent) {
+
+        //Experience newExperience = new Experience(this.candidate_id, "nouveau", "nouveau", "nouveau", "nouveau");
+        //newExperience.save();
+        //experiences.add(newExperience);
+
+    }
+
+    public void handleRemoveApplicationButtonAction(ActionEvent actionEvent) {
+
+        //if(!this.experiencesTableView.getSelectionModel().isEmpty()) {
+        //    int id = Integer.parseInt(this.experiencesTableView.getSelectionModel().getSelectedItem().getId());
+        //    Database.getInstance().execute(new DeleteQuery(Experience.getTable(), new Predicate("id", String.valueOf(id))));
+        //    this.experiences.remove(this.experiencesTableView.getSelectionModel().getFocusedIndex());
+        //    this.experiencesTableView.refresh();
+        //}
+        //this.removeExperienceButton.setDisable((this.experiencesTableView.getSelectionModel().isEmpty()));
+    }
+
+
+
+
+
+
+
 }
