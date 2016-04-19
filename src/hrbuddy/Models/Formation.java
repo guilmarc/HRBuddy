@@ -173,11 +173,11 @@ public class Formation {
 
     public static List<Formation> related(String key, int id){
         List<HashMap<String,String>> list = Database.getInstance().select(new SelectQuery(Formation.table,new Predicate(key,String.valueOf(id))));
-        List<Formation> Formation = new ArrayList<>();
+        List<Formation> formations = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){
-            Formation.add(new Formation(list.get(i)));
+            formations.add(new Formation(list.get(i)));
         }
-        return Formation;
+        return formations;
 
     }
     /**

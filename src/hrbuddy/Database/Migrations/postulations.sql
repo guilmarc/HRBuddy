@@ -1,1 +1,1 @@
-select * from postulations;
+insert into postulations (candidate_id,date,job_postulated,status,reason) values (1, '2015-03-12', 'Ingenieur','Refusé','Manque d''experience');

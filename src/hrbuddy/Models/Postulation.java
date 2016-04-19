@@ -139,12 +139,13 @@ public class Postulation {
     }
 
     public static List<Postulation> related(String key, int id){
-        List<HashMap<String,String>> list = Database.getInstance().select(new SelectQuery(Formation.table,new Predicate(key,String.valueOf(id))));
-        List<Postulation> Postulation = new ArrayList<>();
+
+        List<HashMap<String,String>> list = Database.getInstance().select(new SelectQuery(Postulation.table,new Predicate(key,String.valueOf(id))));
+        List<Postulation> postulations = new ArrayList<>();
         for(int i = 0; i < list.size(); i++){
-            Postulation.add(new Postulation(list.get(i)));
+            postulations.add(new Postulation(list.get(i)));
         }
-        return Postulation;
+        return postulations;
 
     }
 

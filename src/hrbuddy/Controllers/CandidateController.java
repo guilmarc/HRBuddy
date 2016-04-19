@@ -511,7 +511,7 @@ public class CandidateController implements Initializable, ControlledScreen{
 
         if(!this.postulationsTableView.getSelectionModel().isEmpty()) {
             int id = Integer.parseInt(this.postulationsTableView.getSelectionModel().getSelectedItem().getId());
-            Database.getInstance().execute(new DeleteQuery(Experience.getTable(), new Predicate("id", String.valueOf(id))));
+            Database.getInstance().execute(new DeleteQuery(Postulation.getTable(), new Predicate("id", String.valueOf(id))));
             this.postulations.remove(this.postulationsTableView.getSelectionModel().getFocusedIndex());
             this.postulationsTableView.refresh();
         }

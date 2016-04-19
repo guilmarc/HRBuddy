@@ -1,5 +1,6 @@
 package hrbuddy.Database.Migrations;
 
+import hrbuddy.Database.Schema.Schema;
 import hrbuddy.Models.Candidate;
 import hrbuddy.Models.Experience;
 import hrbuddy.Models.Formation;
@@ -19,6 +20,7 @@ public class Migration {
 
     private String name ="";
     private String table_creation = "";
+    private Schema schema;
     private List<String> insert_rows;
 
     public String getName(){
@@ -43,6 +45,27 @@ public class Migration {
 
     public void setTableCreation(String table_creation) {
         this.table_creation = table_creation;
+    }
+
+    public Schema getSchema() { return this.schema; }
+
+    public void setSchema(Schema schema){ this.schema = schema; }
+
+    public Migration(String name, Schema schema, String filename){
+        this.name = name;
+        this.schema = schema;
+        Scanner scanner = null;
+        this.insert_rows = new ArrayList<String>();
+        try {
+            scanner = new Scanner(new File(Migration.getMigrationPath(filename)));
+            while (scanner.hasNextLine()){
+                this.insert_rows.add(scanner.nextLine());
+            }
+            scanner.close();
+        } catch (Exception e) {
+            this.insert_rows = new ArrayList<String>();
+            Logger.debug(e.getMessage());
+        }
     }
 
     public Migration(String name, String table_creation, String filename){

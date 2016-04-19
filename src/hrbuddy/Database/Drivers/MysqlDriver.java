@@ -1,5 +1,7 @@
 package hrbuddy.Database.Drivers;
 
+import sun.nio.cs.ext.MS874;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -7,6 +9,7 @@ import java.sql.DriverManager;
  * Created by nboisvert on 17/04/16.
  */
 public class MysqlDriver implements Driver{
+    protected static String increment_statement = "AUTO_INCREMENT";
     protected String protocol = "jdbc:mysql";
     protected String driver_class = "com.mysql.jdbc.Driver";
     protected int port;
@@ -90,5 +93,10 @@ public class MysqlDriver implements Driver{
         catch (Exception ex){
             return false;
         }
+    }
+
+    @Override
+    public String getIncrementStatement() {
+        return MysqlDriver.increment_statement;
     }
 }

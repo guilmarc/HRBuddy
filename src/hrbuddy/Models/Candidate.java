@@ -7,8 +7,10 @@ import hrbuddy.Database.QueryBuilder.Predicates.Predicate;
 import hrbuddy.Database.QueryBuilder.Predicates.PredicateList;
 import hrbuddy.Database.QueryBuilder.Predicates.SearchPredicate;
 import hrbuddy.Database.QueryBuilder.Query.*;
+import hrbuddy.Database.Schema.Schema;
 import hrbuddy.Utils.Logger;
 import hrbuddy.Database.Migrations.Migration;
+import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -255,6 +257,7 @@ public class Candidate{
                 ");";
         return new Migration("Candidate",table, Candidate.migration_file);
     }
+
     public static String getTable(){
         return Candidate.table;
     }

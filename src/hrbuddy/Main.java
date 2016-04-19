@@ -5,12 +5,15 @@ import hrbuddy.Database.Drivers.Driver;
 import hrbuddy.Database.QueryBuilder.Predicates.Predicate;
 import hrbuddy.Database.QueryBuilder.Predicates.RawPredicate;
 import hrbuddy.Database.QueryBuilder.Query.DeleteQuery;
+import hrbuddy.Database.Schema.Schema;
+import hrbuddy.Models.Candidate;
 import hrbuddy.Utils.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sun.rmi.runtime.Log;
 
 public class Main extends Application {
     private final int SCENE_WIDTH = 1024;
