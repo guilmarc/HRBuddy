@@ -6,6 +6,7 @@ import java.io.File;
  * Created by nboisvert on 17/04/16.
  */
 public class SqliteDriver implements Driver{
+    protected static String increment_statement = "AUTOINCREMENT";
     protected String file;
     protected String protocol = "jdbc:sqlite";
     protected String driver_class = "org.sqlite.JDBC";
@@ -34,6 +35,11 @@ public class SqliteDriver implements Driver{
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String getIncrementStatement() {
+        return SqliteDriver.increment_statement;
     }
 
     public String getDriverClass() {

@@ -22,6 +22,7 @@ import java.util.Map;
 public class Postulation {
     protected static String[] search_fields = {"date","job_postulated","status","reason"};
     protected static String migration_file = "postulations.sql";
+    protected static String table = "postulations";
 
     protected String id;
     protected String candidate_id;
@@ -80,6 +81,15 @@ public class Postulation {
         }
     }
 
+    public static List<Postulation> related(String key, int id){
+        List<HashMap<String,String>> list = Database.getInstance().select(new SelectQuery(Postulation.table,new Predicate(key,String.valueOf(id))));
+        List<Postulation> postulations = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++){
+            postulations.add(new Postulation(list.get(i)));
+        }
+        return postulations;
+
+    }
     /**
      * Return every instances of the table
      *
@@ -145,6 +155,6 @@ public class Postulation {
         return new Migration("Postulation",table, Postulation.migration_file);
     }
     public static String getTable(){
-        return Candidate.table;
+        return Postulation.table;
     }
 }

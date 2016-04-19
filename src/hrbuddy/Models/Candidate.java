@@ -7,8 +7,10 @@ import hrbuddy.Database.QueryBuilder.Predicates.Predicate;
 import hrbuddy.Database.QueryBuilder.Predicates.PredicateList;
 import hrbuddy.Database.QueryBuilder.Predicates.SearchPredicate;
 import hrbuddy.Database.QueryBuilder.Query.*;
+import hrbuddy.Database.Schema.Schema;
 import hrbuddy.Utils.Logger;
 import hrbuddy.Database.Migrations.Migration;
+import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +34,7 @@ public class Candidate{
     protected String home_phone;
     protected String cell_phone;
     protected List<Experience> experiences;
+    protected List<Postulation> postulations;
     protected List<Formation> formations;
     protected boolean stored = false;
 
@@ -178,6 +181,16 @@ public class Candidate{
         return this.formations;
     }
 
+    public List<Postulation> getPostulations(boolean refresh){
+        if((this.postulations == null || refresh) && this.stored == true){
+            this.postulations = Postulation.related("candidate_id",Integer.parseInt(this.id));
+        }
+        else if(!this.stored || this.formations == null){
+            this.postulations = new ArrayList<>();
+        }
+        return this.postulations;
+    }
+
     /**
      * Return every instances of the table
      *
@@ -244,6 +257,7 @@ public class Candidate{
                 ");";
         return new Migration("Candidate",table, Candidate.migration_file);
     }
+
     public static String getTable(){
         return Candidate.table;
     }

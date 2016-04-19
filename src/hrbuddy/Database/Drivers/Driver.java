@@ -8,4 +8,5 @@ public interface Driver {
     public String getDriverClass();
     public String getProtocol();
     public boolean databaseExists();
+    public String getIncrementStatement();
 }
