@@ -21,6 +21,7 @@ import java.util.Map;
  */
 public class Postulation {
     protected static String[] search_fields = {"date","job_postulated","status","reason"};
+    protected static String table = "postulations";
     protected static String migration_file = "postulations.sql";
 
     protected String id;
@@ -30,6 +31,15 @@ public class Postulation {
     protected String status;
     protected String reason;
     protected boolean stored;
+
+
+    public Postulation(String candidate_id, String date, String job_postulated, String status, String reason) {
+        this.candidate_id = candidate_id;
+        this.date = date;
+        this.job_postulated = job_postulated;
+        this.status = status;
+        this.reason = reason;
+    }
 
     public Postulation(HashMap<String,String> list){
         this.id = list.get("id");
@@ -49,6 +59,54 @@ public class Postulation {
         values.put("status",this.status);
         values.put("reason",this.reason);
         return values;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCandidate_id() {
+        return candidate_id;
+    }
+
+    public void setCandidate_id(String candidate_id) {
+        this.candidate_id = candidate_id;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getJobPostulated() {
+        return job_postulated;
+    }
+
+    public void setJobPostulated(String job_postulated) {
+        this.job_postulated = job_postulated;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public Queryable getQuery(){
@@ -78,6 +136,16 @@ public class Postulation {
         else {
             return Integer.parseInt(this.id);
         }
+    }
+
+    public static List<Postulation> related(String key, int id){
+        List<HashMap<String,String>> list = Database.getInstance().select(new SelectQuery(Formation.table,new Predicate(key,String.valueOf(id))));
+        List<Postulation> Postulation = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++){
+            Postulation.add(new Postulation(list.get(i)));
+        }
+        return Postulation;
+
     }
 
     /**
@@ -145,6 +213,6 @@ public class Postulation {
         return new Migration("Postulation",table, Postulation.migration_file);
     }
     public static String getTable(){
-        return Candidate.table;
+        return Postulation.table;
     }
 }

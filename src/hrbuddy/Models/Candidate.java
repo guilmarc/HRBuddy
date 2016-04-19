@@ -33,6 +33,7 @@ public class Candidate{
     protected String cell_phone;
     protected List<Experience> experiences;
     protected List<Formation> formations;
+    protected List<Postulation> postulations;
     protected boolean stored = false;
 
     public Candidate(String firstname,String lastname,String address,String email,String home_phone,String cell_phone){
@@ -176,6 +177,16 @@ public class Candidate{
             this.formations = new ArrayList<>();
         }
         return this.formations;
+    }
+
+    public List<Postulation> getPostulations(boolean refresh){
+        if((this.postulations == null || refresh) && this.stored == true){
+            this.postulations = Postulation.related("candidate_id",Integer.parseInt(this.id));
+        }
+        else if(!this.stored || this.postulations == null){
+            this.postulations = new ArrayList<>();
+        }
+        return this.postulations;
     }
 
     /**

@@ -91,7 +91,7 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="formationsTableView" editable="true" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TableView fx:id="formationsTableView" editable="true" onMouseClicked="#handleFormationsTableViewClick" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
                             <TableColumn fx:id="formationsDiplomaColumn" prefWidth="358.0" text="Diplôme" />
                               <TableColumn fx:id="formationsDateColumn" minWidth="0.0" prefWidth="109.0" text="Date" />
@@ -110,33 +110,20 @@
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView editable="true" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TableView fx:id="postulationsTableView" editable="true" onMouseClicked="#handlePostulationsTableViewClick" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="Date" />
-                            <TableColumn prefWidth="306.0" text="Emploi postulé" />
-                              <TableColumn prefWidth="120.0" text="Statut" />
-                              <TableColumn prefWidth="195.0" text="Raison" />
+                            <TableColumn fx:id="postulationsDateColumn" prefWidth="75.0" text="Date" />
+                            <TableColumn fx:id="postulationsJobColumn" prefWidth="306.0" text="Emploi postulé" />
+                              <TableColumn fx:id="postulationsStatusColumn" prefWidth="120.0" text="Statut" />
+                              <TableColumn fx:id="postulationsReasonColumn" prefWidth="195.0" text="Raison" />
                           </columns>
                         </TableView>
                         <ToolBar layoutX="10.0" layoutY="219.0" prefHeight="46.0" prefWidth="769.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                            <items>
-                              <Button fx:id="addApplicationButton" mnemonicParsing="false" onAction="#handleAddApplicationButtonAction" styleClass="addButton" text="Ajouter" />
-                              <Button fx:id="removeApplicationButton" disable="true" mnemonicParsing="false" onAction="#handleRemoveApplicationButtonAction" styleClass="removeButton" text="Supprimer" />
+                              <Button fx:id="addPostulationButton" mnemonicParsing="false" onAction="#handleAddPostulationButtonAction" styleClass="addButton" text="Ajouter" />
+                              <Button fx:id="removePostulationButton" disable="true" mnemonicParsing="false" onAction="#handleRemovePostulationButtonAction" styleClass="removeButton" text="Supprimer" />
                            </items>
                         </ToolBar>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-            <Tab text="Suggestions">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <TableView layoutX="193.0" layoutY="12.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <columns>
-                            <TableColumn prefWidth="768.0" text="Postes suggérés" />
-                          </columns>
-                        </TableView>
                      </children>
                   </AnchorPane>
                </content>
