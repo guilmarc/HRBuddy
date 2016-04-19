@@ -1,10 +1,7 @@
 package hrbuddy.Database.Migrations;
 
 import hrbuddy.Database.Schema.Schema;
-import hrbuddy.Models.Candidate;
-import hrbuddy.Models.Experience;
-import hrbuddy.Models.Formation;
-import hrbuddy.Models.Postulation;
+import hrbuddy.Models.*;
 import hrbuddy.Utils.Logger;
 
 import java.io.File;
@@ -100,11 +97,12 @@ public class Migration {
     }
 
     public static Migration[] getAllMigrations(){
-        Migration[] migrations = new Migration[4];
+        Migration[] migrations = new Migration[5];
         migrations[0] = Candidate.getMigration();
         migrations[1] = Experience.getMigration();
         migrations[2] = Formation.getMigration();
         migrations[3] = Postulation.getMigration();
+        migrations[4] = Gender.getMigration();
         return migrations;
     }
 }
