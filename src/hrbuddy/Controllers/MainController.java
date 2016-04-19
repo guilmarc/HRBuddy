@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -71,10 +72,11 @@ public class MainController extends TabPane{
         this.newTab("quotation",-1);
     }
 
-    public void closeApplication(ActionEvent actionEvent) {
+    public void searchCandidate(ActionEvent actionEvent) {
+        this.newTab("search_candidate",-1);
     }
 
-    public void serachCandidate(ActionEvent actionEvent) {
-        this.newTab("search_candidate",-1);
+    public void closeApplication(ActionEvent actionEvent) {
+        ((Stage) this.mainTabPane.getScene().getWindow()).close();
     }
 }
