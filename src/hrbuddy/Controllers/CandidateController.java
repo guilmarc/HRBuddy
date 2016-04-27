@@ -349,6 +349,7 @@ public class CandidateController implements Initializable, ControlledScreen{
             this.emailTextField.setText(this.candidate.getEmail());
             this.homephoneTextField.setText(this.candidate.getHomePhone());
             this.mobilephoneTextField.setText(this.candidate.getCellPhone());
+            this.genderComboBox.getSelectionModel().select(Integer.parseInt(this.candidate.getGenderId()));
             this.idTextField.setText(this.candidate.getId());
 
             List<Experience> exp_list = this.candidate.getExperiences(true);
@@ -398,6 +399,7 @@ public class CandidateController implements Initializable, ControlledScreen{
         Candidate candidate;
         if(this.candidate_id.equals("-1")) {
             candidate = new Candidate(
+                    String.valueOf(this.genderComboBox.selectionModelProperty().get().getSelectedIndex()),
                     this.firstnameTextField.getText(),
                     this.lastnameTextField.getText(),
                     this.addressTextField.getText(),
@@ -408,6 +410,7 @@ public class CandidateController implements Initializable, ControlledScreen{
         }
         else{
             candidate = Candidate.find(Integer.parseInt(this.candidate_id));
+            candidate.setGenderId(String.valueOf(this.genderComboBox.selectionModelProperty().get().getSelectedIndex()));
             candidate.setFirstname(this.firstnameTextField.getText());
             candidate.setLastname(this.lastnameTextField.getText());
             candidate.setAddress(this.addressTextField.getText());

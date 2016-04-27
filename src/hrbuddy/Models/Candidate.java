@@ -33,30 +33,38 @@ public class Candidate{
     protected String email;
     protected String home_phone;
     protected String cell_phone;
+    protected String gender_id;
+    protected Gender gender;
     protected List<Experience> experiences;
     protected List<Formation> formations;
     protected List<Postulation> postulations;
     protected boolean stored = false;
 
-    public Candidate(String firstname,String lastname,String address,String email,String home_phone,String cell_phone){
+    public Candidate(String gender_id, String firstname,String lastname,String address,String email,String home_phone,String cell_phone){
         this.firstname = firstname;
         this.lastname = lastname;
         this.address = address;
         this.email = email;
         this.home_phone = home_phone;
         this.cell_phone = cell_phone;
+        this.gender_id = gender_id;
         this.experiences = null;
+        this.formations = null;
+        this.postulations = null;
         this.stored = false;
 
     }
     public Candidate(){
         this.firstname = "";
+        this.gender_id = "";
         this.lastname = "";
         this.address = "";
         this.email = "";
         this.home_phone = "";
         this.cell_phone = "";
         this.experiences = null;
+        this.formations = null;
+        this.postulations = null;
     }
     public Candidate(HashMap<String,String> list){
         this.id = (list.containsKey("id") ? list.get("id") : "");
@@ -66,7 +74,10 @@ public class Candidate{
         this.email = (list.containsKey("email") ? list.get("email") : "");
         this.home_phone = (list.containsKey("home_phone") ? list.get("home_phone") : "");
         this.cell_phone = (list.containsKey("cell_phone") ? list.get("cell_phone") : "");
+        this.gender_id = (list.containsKey("cell_phone") ? list.get("gender_id") : "");
         this.experiences = null;
+        this.formations = null;
+        this.postulations = null;
         this.stored = true;
     }
 
@@ -109,9 +120,12 @@ public class Candidate{
     public void setHomePhone(String home_phone) {
         this.home_phone = home_phone;
     }
+    public String getGenderId(){return this.gender_id;}
+    public void setGenderId(String gender_id){this.gender_id = gender_id;}
 
     private Map<String,String> getMap(){
         Map<String,String> values = new HashMap<String, String>();
+        values.put("gender_id", this.gender_id);
         values.put("firstname",this.firstname);
         values.put("lastname",this.lastname);
         values.put("address",this.address);
@@ -136,6 +150,7 @@ public class Candidate{
 
     public String toString(){
         return "id : "+this.id+"\n" +
+                        "gender : "+this.getGender(false).getGender()+"\n" +
                         "firstname : "+this.firstname+"\n" +
                         "lastname : "+this.lastname+"\n" +
                         "address : "+this.address+"\n" +
@@ -189,6 +204,16 @@ public class Candidate{
             this.postulations = new ArrayList<>();
         }
         return this.postulations;
+    }
+
+    public Gender getGender(boolean refresh){
+        if((this.gender == null || refresh) && this.stored == true){
+            this.gender = Gender.find(Integer.parseInt(this.gender_id));
+        }
+        else if(!this.stored || this.gender == null){
+            this.gender = null;
+        }
+        return this.gender;
     }
 
     /**
@@ -247,6 +272,7 @@ public class Candidate{
     public static Migration getMigration(){
         String table ="CREATE TABLE candidates (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "gender_id varchar(150)," +
                 "firstname varchar(150)," +
                 "lastname varchar(150)," +
                 "city varchar(150)," +
